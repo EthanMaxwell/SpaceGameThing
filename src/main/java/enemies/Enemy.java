@@ -1,3 +1,6 @@
+package enemies;
+import main.MainSketch;
+import objects.Shot;
 import processing.core.PVector;
 
 /**
@@ -75,7 +78,7 @@ public class Enemy {
 	int enScore; // Score to be given upon being destroyed
 
 	// Make new enemy at given x and y positions with given type
-	Enemy(float x, float y, int type) {
+	public Enemy(float x, float y, int type) {
 		// Set general enemy information to stuff given
 		enType = type;
 		enPos = new PVector(x, y);
@@ -124,7 +127,7 @@ public class Enemy {
 	}
 
 	// Draw the enemy
-	void drawEnemy(MainSketch canvas) {
+	public void drawEnemy(MainSketch canvas) {
 		canvas.fill(enRed, enGreen, enBlue); // Set the colour to the correct one
 
 		canvas.pushMatrix(); // Matrix of this enemy
@@ -169,7 +172,7 @@ public class Enemy {
 	}
 
 	// Point enemy at and move towards given coordinates
-	void moveEnemy(PVector shipPos, int difficulty) {
+	public void moveEnemy(PVector shipPos, int difficulty) {
 		enPos.x += Math.cos(enAngle) * enVel * (1 + difficulty * SPEED_DIF);
 		enPos.y += Math.sin(enAngle) * enVel * (1 + difficulty * SPEED_DIF);
 		float angleToShip = (float) Math.atan((enPos.y - shipPos.y) / (enPos.x - shipPos.x));
@@ -223,7 +226,7 @@ public class Enemy {
 	}
 
 	// Make a new shot at the enemy's position
-	Shot shoot() {
+	public Shot shoot() {
 		enTimer++; // Increment the enemies own internal timer
 		// Type 1 is able to shoot
 		if (enType == 1 && enTimer > ROF1) {
@@ -240,12 +243,12 @@ public class Enemy {
 	}
 
 	// Check if the enemy it touching a ship of given location and size
-	boolean touching(float shipX, float shipY, int diam) {
+	public boolean touching(float shipX, float shipY, int diam) {
 		return Math.hypot(shipX - enPos.x, shipY - enPos.y) < (enSize + diam) / 2;
 	}
 
 	// Damaged the enemy by the given amount and returns whether it died or not
-	boolean damage(float damage) {
+	public boolean damage(float damage) {
 		enHealth -= damage;
 		// Check if the damage killed the enemy
 		if (enHealth <= 0) {
@@ -259,22 +262,22 @@ public class Enemy {
 	}
 
 	// Return the x position of the enemy
-	float getPosX() {
+	public float getPosX() {
 		return enPos.x;
 	}
 
 	// Return the y position of the enemy
-	float getPosY() {
+	public float getPosY() {
 		return enPos.y;
 	}
 
 	// Return the score given by this enemy
-	int getScore() {
+	public int getScore() {
 		return enScore;
 	}
 
 	// Returns the enemies type
-	int getType() {
+	public int getType() {
 		return enType;
 	}
 }

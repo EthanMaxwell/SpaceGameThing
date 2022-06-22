@@ -1,3 +1,5 @@
+package objects;
+import main.MainSketch;
 import processing.core.PApplet;
 
 //TODO: Whole class is a dumpster fire, so please fix. Should have sub classes and not all be static, no Applet class.
@@ -9,7 +11,7 @@ import processing.core.PApplet;
  * damage 4: Makes the player shot very fast, by decreases accuracy and shot
  * size
  */
-class PowerUp {
+public class PowerUp {
 	// Names of all the different possible power ups
 	static final String[] POWER_UP_NAMES = { "Healing kit", "Sniper shot", "Rapid fire", "Heavy bullets",
 			"Ultra Rapid Fire" };
@@ -20,7 +22,7 @@ class PowerUp {
 	int powerUpTime = POWER_UP_TIME; // Frames remaining on the power up
 
 	// Create a new power up on the given type
-	PowerUp(int powerUpNum) {
+	public PowerUp(int powerUpNum) {
 		powerUpType = powerUpNum;
 	}
 
@@ -30,7 +32,7 @@ class PowerUp {
 	 * Applies the power up to the players ship Returns whether the power up has run
 	 * out
 	 */
-	boolean powerUpNum() {
+	public boolean powerUpNum() {
 		powerUpTime--; // Countdown the time left on the power up
 
 		// Healing kit heals player ship per frame
@@ -78,7 +80,7 @@ class PowerUp {
 	 * 
 	 * @param canvas
 	 */
-	void drawPowerUp(int powerUpNum, MainSketch canvas) {
+	public void drawPowerUp(int powerUpNum, MainSketch canvas) {
 		// TODO:Remove
 		canvas.text(POWER_UP_NAMES[powerUpType] + " " + (powerUpTime / 60 + 1), 15, canvas.height - 30 * powerUpNum - 10);
 	}

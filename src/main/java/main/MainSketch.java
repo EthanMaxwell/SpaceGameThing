@@ -1,5 +1,12 @@
+package main;
 import java.util.ArrayList;
 
+import enemies.Enemy;
+import objects.Button;
+import objects.Crate;
+import objects.Flame;
+import objects.PowerUp;
+import objects.Shot;
 import processing.core.PApplet;
 import processing.core.PVector;
 

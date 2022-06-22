@@ -1,3 +1,5 @@
+package objects;
+import main.MainSketch;
 import processing.core.PVector;
 
 /**
