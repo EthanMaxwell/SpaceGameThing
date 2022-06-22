@@ -1,7 +1,10 @@
 package enemies;
 
+import objects.Shot;
+import processing.core.PVector;
+
 /**
- * A enemy that charges towards player, kamikaze style.
+ * A category of enemies that charge towards player, kamikaze style.
  * 
  * @author Ethan Maxwell
  *
@@ -9,7 +12,7 @@ package enemies;
 public abstract class Charger extends Enemy {
 
 	/**
-	 * Make new charger enemy at given x and y positions
+	 * Make new charger enemy at given x and y positions.
 	 * 
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
@@ -21,7 +24,12 @@ public abstract class Charger extends Enemy {
 	}
 
 	@Override
-	protected void modVelocity(float angleToShip) {
+	protected void modVelocity(PVector shipPos) {
+		float angleToShip = (float) Math.atan((position.y - shipPos.y) / (position.x - shipPos.x));
+		if (shipPos.x < position.x) {
+			angleToShip += Math.PI;
+		}
+		
 		if (angle - angleToShip > Math.PI) {
 			angle -= 2 * Math.PI;
 		} else if (angleToShip - angle > Math.PI) {
@@ -34,6 +42,11 @@ public abstract class Charger extends Enemy {
 				angle -= getTurnSpeed();
 			}
 		}
+	}
+	
+	@Override
+	public Shot shoot() {
+		return null;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package enemies;
 import main.MainSketch;
 import objects.Shot;
+import processing.core.PConstants;
 import processing.core.PVector;
 
 /**
@@ -160,7 +161,7 @@ public class Enemy2 {
 			canvas.vertex(-enSize / 4, 0);
 			canvas.vertex(-enSize / 2, -enSize / 2);
 			canvas.vertex(enSize / 2, -enSize / 3);
-			canvas.endShape(canvas.CLOSE);
+			canvas.endShape(PConstants.CLOSE);
 		}
 
 		// If type 4 drawn a simple isosoles triangle

@@ -4,10 +4,9 @@ import main.MainSketch;
 import objects.Shot;
 import processing.core.PVector;
 
-
-/**The object for all enemies in the game enemies are just any hostile ship
- * that tries to harm the player. They come is various shape, sizes and
- * behaviours.
+/**
+ * The object for all enemies in the game enemies are just any hostile ship that
+ * tries to harm the player. They come is various shape, sizes and behaviours.
  * 
  * @author Ethan Maxwell
  */
@@ -27,12 +26,13 @@ public abstract class Enemy {
 	protected int greenColour = (int) (Math.random() * 120);
 	/** Blue value of the ships colour */
 	protected int blueColour = (int) (Math.random() * 120);
-	/** Frames since being spawn (used for timing shooting) */
-	protected int age = 0;
+	/** Frames since last shooting (used for timing shooting) */
+	protected int shootTimer = 0;
 	/** Enemies current health */
 	protected float curHealth;
 
-	/** Make new enemy at given x and y positions 
+	/**
+	 * Make new enemy at given x and y positions
 	 * 
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
@@ -40,7 +40,7 @@ public abstract class Enemy {
 	protected Enemy(float x, float y) {
 		position = new PVector(x, y);
 		curHealth = getMaxHealth();
-		
+
 		// If on the right side of the screen, look left
 		if (x > 0) {
 			angle = (float) Math.PI; // Make it look left
@@ -73,9 +73,9 @@ public abstract class Enemy {
 		canvas.pushMatrix(); // Matrix of this enemy
 		canvas.translate(position.x, position.y);
 		canvas.rotate(angle);
-		
+
 		drawEnemyShape(canvas);
-		
+
 		canvas.popMatrix();
 	}
 
@@ -93,24 +93,20 @@ public abstract class Enemy {
 	 * @param difficulty The current game difficulty
 	 */
 	public void moveEnemy(PVector shipPos, int difficulty) {
-		age++;
-		
+		shootTimer++;
+
 		position.x += Math.cos(angle) * speed * (1 + difficulty * SPEED_DIF);
 		position.y += Math.sin(angle) * speed * (1 + difficulty * SPEED_DIF);
-		float angleToShip = (float) Math.atan((position.y - shipPos.y) / (position.x - shipPos.x));
-		if (shipPos.x < position.x) {
-			angleToShip += Math.PI;
-		}
-		
-		modVelocity(angleToShip);
+
+		modVelocity(shipPos);
 	}
 
 	/**
 	 * Modify the angle and velocity of the ship
 	 * 
-	 * @param angleToShip
+	 * @param shipPos Position of the players ship
 	 */
-	protected abstract void modVelocity(float angleToShip);
+	protected abstract void modVelocity(PVector shipPos);
 
 	/**
 	 * Try to make a new shot for this enemy. Returns null if the enemy is not
@@ -157,7 +153,7 @@ public abstract class Enemy {
 	public float getPosX() {
 		return position.x;
 	}
-	
+
 	/**
 	 * @return The y position of the enemy
 	 */

@@ -1,7 +1,6 @@
 package enemies;
 
 import main.MainSketch;
-import objects.Shot;
 
 /**
  * A fast triangle enemy that charges towards player, kamikaze style.
@@ -12,7 +11,7 @@ import objects.Shot;
 public class TriangleCharger extends Charger {
 
 	/**
-	 * Make new triangle enemy at given x and y positions
+	 * Make new triangle enemy at given x and y positions.
 	 * 
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
@@ -55,10 +54,4 @@ public class TriangleCharger extends Charger {
 	public void drawEnemyShape(MainSketch canvas) {
 		canvas.triangle(getSize() / 2, 0, -getSize() / 4, getSize() / 3, -getSize() / 4, -getSize() / 3);
 	}
-
-	@Override
-	public Shot shoot() {
-		return null;
-	}
-
 }

@@ -1,7 +1,9 @@
 package main;
+
 import java.util.ArrayList;
 
 import enemies.Enemy;
+import enemies.StarMine;
 import objects.Button;
 import objects.Crate;
 import objects.Flame;
@@ -10,7 +12,7 @@ import objects.Shot;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class MainSketch extends PApplet{
+public class MainSketch extends PApplet {
 //All constants
 	private static final float SHIP_ACC = 0.2f, // Max acceleration of the ship
 			SHIP_ROTACC = 0.006f, // Max rotational acceleration of the ship
@@ -46,7 +48,7 @@ public class MainSketch extends PApplet{
 			screenPos, // Position on whole map of the screen
 			screenVel; // Velocities of the screen panning
 
-	//TODO: Oh, dear God no!
+	// TODO: Oh, dear God no!
 	public static float curShipAcc, // The ships current acceleration
 			shipAngle, // The ships current angle
 			shipRotVel, // The ships current rotational velocity
@@ -63,20 +65,11 @@ public class MainSketch extends PApplet{
 			playerScore, // Players current game score
 			gameScreen, // Current menu screen the player is in
 			difficulty; // Difficulty from -1 (easy), 0 (normal) or 1 (hard)
-	
+
 	private static final int[][] WAVE_DATA = {
-			  //0  , 1  , 2  , 3  , 4 
-			  { 30 , 0  , 5  , 0  , 1  },
-			  { 30 , 3  , 10 , 0  , 3  },
-			  { 20 , 8  , 30 , 0  , 4  },
-			  { 10 , 12 , 10 , 1  , 8  },
-			  { 5  , 5  , 5  , 1  , 33 },
-			  { 4  , 10 , 5  , 3  , 20 },
-			  { 3  , 5  , 5  , 5  , 20 },
-			  { 2  , 5  , 10 , 8  , 25 },
-			  { 1  , 15 , 30 , 7  , 30 },
-			  { 1  , 1  , 1  , 1  , 2  },
-			};
+			// 0 , 1 , 2 , 3 , 4
+			{ 30, 0, 5, 0, 1 }, { 30, 3, 10, 0, 3 }, { 20, 8, 30, 0, 4 }, { 10, 12, 10, 1, 8 }, { 5, 5, 5, 1, 33 },
+			{ 4, 10, 5, 3, 20 }, { 3, 5, 5, 5, 20 }, { 2, 5, 10, 8, 25 }, { 1, 15, 30, 7, 30 }, { 1, 1, 1, 1, 2 }, };
 
 	private boolean gameRunning = false; // Whether the actual game is running, or just menus
 
@@ -89,16 +82,16 @@ public class MainSketch extends PApplet{
 	private ArrayList<PowerUp> powerUps; // All the crates across the map
 	private ArrayList<Button> buttons = new ArrayList<Button>(); // All the button that appear in menus
 
-	public static void main(String[] args){
-		String[] processingArgs = {"MainSketch"};
+	public static void main(String[] args) {
+		String[] processingArgs = { "MainSketch" };
 		MainSketch sketch = new MainSketch();
 		PApplet.runSketch(processingArgs, sketch);
 	}
-	
+
 	public void settings() {
 		fullScreen(); // Game runs best on fullscreen
-		//TODO: Font problems...
-		//textFont(loadFont("CenturyGothic-100.vlw")); // Use Century Gothic font
+		// TODO: Font problems...
+		// textFont(loadFont("CenturyGothic-100.vlw")); // Use Century Gothic font
 		restartGame(); // Inialise all the game values
 		// Create all the random star positions
 		for (int i = 0; i < stars.length; i++) {
@@ -106,14 +99,15 @@ public class MainSketch extends PApplet{
 					random(-WORLD_RAD - 500, WORLD_RAD + 500));
 		}
 		// Make all the buttons that will appear in the menus
-		buttons.add(new Button("Start", 1f/2, 1f/2, 300, 140)); // Screen 0
-		buttons.add(new Button("Easy", 1f/4, 1f/2, 250, 120)); // Screen 1
-		buttons.add(new Button("Normal", 1f/2, 1f/2, 250, 120)); // Screen 1
-		buttons.add(new Button("Hard", 3f/4, 1f/2, 250, 120)); // Screen 1
-		buttons.add(new Button("Play again", 1f/2, 4f/6, 400, 120)); // Screen 2
-		buttons.add(new Button("Exit", 1f/2, 6f/7, 150, 80)); // All screens
+		buttons.add(new Button("Start", 1f / 2, 1f / 2, 300, 140)); // Screen 0
+		buttons.add(new Button("Easy", 1f / 4, 1f / 2, 250, 120)); // Screen 1
+		buttons.add(new Button("Normal", 1f / 2, 1f / 2, 250, 120)); // Screen 1
+		buttons.add(new Button("Hard", 3f / 4, 1f / 2, 250, 120)); // Screen 1
+		buttons.add(new Button("Play again", 1f / 2, 4f / 6, 400, 120)); // Screen 2
+		buttons.add(new Button("Exit", 1f / 2, 6f / 7, 150, 80)); // All screens
 	}
 
+	@Override
 	public void draw() {
 
 		background(0); // Make black background
@@ -260,7 +254,7 @@ public class MainSketch extends PApplet{
 		// Draw all enemies except mines onto minimap area
 		for (Enemy curEnemy : enemies) {
 			fill(255, 10, 10); // Red for enemy dots on minimap
-			if (curEnemy.getType() != 2) { // If not a mine draw the dot
+			if (!(curEnemy instanceof StarMine)) { // If not a mine draw the dot
 				ellipse(width - WORLD_RAD / 2 * MM_SIZE - MM_GAP + curEnemy.getPosX() / 2 * MM_SIZE,
 						height - WORLD_RAD / 2 * MM_SIZE - MM_GAP + curEnemy.getPosY() / 2 * MM_SIZE, MM_DOT_SIZE,
 						MM_DOT_SIZE);
@@ -603,7 +597,7 @@ public class MainSketch extends PApplet{
 		time = WAVE_TIME * (difficulty + 1);
 	}
 
-	 /*
+	/*
 	 * Run when the player just clicks the mouse Not used in game, only in the menus
 	 */
 	public void mouseReleased() {

@@ -1,7 +1,6 @@
 package enemies;
 
 import main.MainSketch;
-import objects.Shot;
 
 /**
  * A slow square enemy that charges towards player, kamikaze style.
@@ -12,7 +11,7 @@ import objects.Shot;
 public class SquareCharger extends Charger {
 
 	/**
-	 * Make new square enemy at given x and y positions
+	 * Make new square enemy at given x and y positions.
 	 * 
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
@@ -55,10 +54,5 @@ public class SquareCharger extends Charger {
 	public void drawEnemyShape(MainSketch canvas) {
 		canvas.rect(-getSize() / 2, -getSize() / 2, getSize(), getSize());
 
-	}
-
-	@Override
-	public Shot shoot() {
-		return null;
 	}
 }
