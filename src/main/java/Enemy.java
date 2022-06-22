@@ -15,42 +15,52 @@ public class Enemy {
 	// All the data about the different enemy types :
 
 	// Type 0, Simple square that move towards player
-	static final float SIZE0 = 15, TURN_SPEED0 = 0.05f, // Max angle per frame turn rate
+	private static final float SIZE0 = 15, TURN_SPEED0 = 0.05f, // Max angle per frame turn rate
 			VELOCITY0 = 4, // Enemies constant velocity
 			ACCURACY = 0.5f; // How accurately it points at the players ship
-	static final int HEALTH0 = 1, SCORE_GIVEN0 = 1; // Score given when destroyed
+	private static final int HEALTH0 = 1, SCORE_GIVEN0 = 1; // Score given when destroyed
 
-	// Type 1, Oval that moves towards player and shoots
-	static final float SIZE1 = 30, SHOT_SPEED1 = 11, // Speed of it's shot projectiles
-			SHOT_DIAM1 = 12, // Size of shot projectiles
-			MAX_VEL1 = 5, // Maximum velocity possible when far from player
-			BASE_SPEED1 = -2, // Velocity when very close to the player
-			DIST_SPEED1 = 0.0225f; // % of distance to player ship added as velocity
-	static final int ROF1 = 77, // Rate of Fire
-			HEALTH1 = 2, SHOT_DAMAGE1 = 3, // Damage of one if it shots
-			SCORE_GIVEN1 = 3;
+	/** Type 1, Oval that moves towards player and shoots */
+	private static final float SIZE1 = 30;
+	/** Speed of it's shot projectiles */
+	private static final float SHOT_SPEED1 = 11;
+	/** Size of shot projectiles */
+	private static final float SHOT_DIAM1 = 12;
+	/** Maximum velocity possible when far from player */
+	private static final float MAX_VEL1 = 5;
+	/** Velocity when very close to the player */
+	private static final float BASE_SPEED1 = -2;
+	/** % of distance to player ship added as velocity */
+	private static final float DIST_SPEED1 = 0.0225f;
+	/** Rate of Fire */
+	private static final int ROF1 = 77;
+	/** ?? */
+	private static final int HEALTH1=2;
+/** Damage of one if it shots */
+	private static final int SHOT_DAMAGE1=3;
+	private static final int SCORE_GIVEN1 = 3;
 
 	// Type 2, unmoving mine enemy shown as six pointed star
-	static final float SIZE2 = 40, TURN_SPEED2 = 0.025f; // Angle per frame turn rate on the stop
-	static final int HEALTH2 = 5, SCORE_GIVEN2 = 4; // Score given when destroyed
+	private static final float SIZE2 = 40, TURN_SPEED2 = 0.025f; // Angle per frame turn rate on the stop
+	private static final int HEALTH2 = 5, SCORE_GIVEN2 = 4; // Score given when destroyed
 
 	// Type 3, flat nosed triangle with raMath.PId fire
-	static final float SIZE3 = 30, SHOT_SPEED3 = 7, // Speed of this ships shots
+	private static final float SIZE3 = 30, SHOT_SPEED3 = 7, // Speed of this ships shots
 			SHOT_DIAM3 = 17, // Size of this ships shots
 			MAX_VEL3 = 9, // Max possible velocity when far from player
 			BASE_SPEED3 = -6, // Velocity when very close to the player
 			DIST_SPEED3 = 0.02f; // % of distance to player ship added as velocity
-	static final int HEALTH3 = 2, ROF3 = 21, // Rate of Fire
+	private static final int HEALTH3 = 2, ROF3 = 21, // Rate of Fire
 			SHOT_DAMAGE3 = 2, // Damage per shot
 			SCORE_GIVEN3 = 5; // Score given when destroyed
 
 	// Fast as little triangle enemy that kamikazes into player
-	static final float SIZE4 = 20, TURN_SPEED4 = 0.033f, // max angle per frame turn rate
+	private static final float SIZE4 = 20, TURN_SPEED4 = 0.033f, // max angle per frame turn rate
 			VELOCITY4 = 8, // Enemies constant velocity
 			ACCURACY4 = 0.25f; // How accurately it points at the players ship
-	static final int HEALTH4 = 1, SCORE_GIVEN4 = 2;
+	private static final int HEALTH4 = 1, SCORE_GIVEN4 = 2;
 
-	static final float SPEED_DIF = 0.15f; // % added or removed from all enemies speed based off difficulty
+	private static final float SPEED_DIF = 0.15f; // % added or removed from all enemies speed based off difficulty
 
 	PVector enPos; // Position of the enemy
 	float enAngle; // Angle the enemy is pointing
