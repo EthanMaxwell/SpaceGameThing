@@ -223,7 +223,7 @@ public class MainSketch extends PApplet{
 		}
 		// Game screen 2:End game
 		else {
-			textSize(50); // Text size on end game information
+			textSize(50); // Text curSize on end game information
 			// Write out all the end game information
 
 			text("You got a score of : " + playerScore, width / 2, height / 3);
@@ -396,7 +396,7 @@ public class MainSketch extends PApplet{
 
 //Draws the players ship with the little cannon on the top
 	private void drawShip() {
-		// Matrix of the ships position and size
+		// Matrix of the ships position and curSize
 		pushMatrix();
 		translate(shipPos.x, shipPos.y);
 		scale(16 / (float) SHIP_RAD);
@@ -570,7 +570,7 @@ public class MainSketch extends PApplet{
 //Draw all the current power up to the screen
 	private void showPowerUps() {
 		fill(255);// White
-		textSize(30);// power up text size
+		textSize(30);// power up text curSize
 		// The power ups need to know what number they are to be drawn
 		int powerUpNum = 0;
 		// Cycle through all the power up so they can be drawn

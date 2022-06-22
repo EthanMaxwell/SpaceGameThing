@@ -10,7 +10,7 @@ import processing.core.PVector;
 public class Button {
 	/** Amount across the screen the button is located */
 	private PVector buttonPos;
-	/** x and y size of the button */
+	/** x and y curSize of the button */
 	private PVector buttonSize;
 	/** Text to write into the button */
 	private String buttonText;
@@ -19,8 +19,8 @@ public class Button {
 	 * Create a new button with given text, position and sizes
 	 * 
 	 * @param text  Text to put on button
-	 * @param x     The x position of button as a faction of the screen size
-	 * @param y     The y position of button as a faction of the screen size
+	 * @param x     The x position of button as a faction of the screen curSize
+	 * @param y     The y position of button as a faction of the screen curSize
 	 * @param xSize The width of the button
 	 * @param ySize The height of the button
 	 */
@@ -39,7 +39,7 @@ public class Button {
 		PVector buttonLoc = new PVector();
 		buttonLoc.x = canvas.width * buttonPos.x;
 		buttonLoc.y = canvas.height * buttonPos.y;
-		// Make a copy of the buttons size to use so it can be changed temporarily
+		// Make a copy of the buttons curSize to use so it can be changed temporarily
 		PVector curSize = buttonSize.copy();
 
 		// If the mouse isn't on the button, draw it normally
@@ -63,7 +63,7 @@ public class Button {
 		if (buttonText == "Start") {
 			canvas.textSize(curSize.y / 1.3f);
 		}
-		// If not a start button, make text fit to box size
+		// If not a start button, make text fit to box curSize
 		else {
 			canvas.textSize(curSize.y / 2);
 		}

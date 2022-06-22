@@ -12,7 +12,7 @@ public class Flame {
 	// Constant values for the flames
 	/** Max time a flame can last */
 	private final static int MAX_AGE = 50;
-	/** Max size a flame can be */
+	/** Max curSize a flame can be */
 	private final static int MAX_SIZE = 15;
 	/** Half angle of the thruster */
 	private final static float ANGLE_VAR = 0.7f;
@@ -26,7 +26,7 @@ public class Flame {
 	private PVector flamePos;
 	/** Velocity of the flame */
 	private PVector flameVel;
-	/** Initial size of the flame */
+	/** Initial curSize of the flame */
 	private int flameSize = (int) random(MAX_SIZE / 2, MAX_SIZE);
 	/** How long the flame will last */
 	private int flameStartAge = (int) random(MAX_AGE / 2, MAX_AGE);

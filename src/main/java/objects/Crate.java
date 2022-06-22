@@ -30,7 +30,7 @@ public class Crate {
 	}
 
 	/**
-	 * Check if ship a given coordinate and size is touching the crate
+	 * Check if ship a given coordinate and curSize is touching the crate
 	 * 
 	 * @param shipX    X position of the ship
 	 * @param shipY    Y Position of the ship

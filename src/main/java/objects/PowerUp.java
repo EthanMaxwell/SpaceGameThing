@@ -7,9 +7,9 @@ import processing.core.PApplet;
  * The power ups that the player can get 0: Healing kit heals player ship per
  * frame 1: Sniper shot increase accuracy and shot velocity while giving a bit
  * more damage 2: Rapid fire greatly increases the players ships rate of fire 3:
- * Heavy shot increase the size on the players shot and greatly increase their
+ * Heavy shot increase the curSize on the players shot and greatly increase their
  * damage 4: Makes the player shot very fast, by decreases accuracy and shot
- * size
+ * curSize
  */
 public class PowerUp {
 	// Names of all the different possible power ups
@@ -53,14 +53,14 @@ public class PowerUp {
 			MainSketch.curShotTime /= 1.8;
 		}
 
-		// Heavy shot increase the size on the players shot and greatly increase their
+		// Heavy shot increase the curSize on the players shot and greatly increase their
 		// damage
 		else if (powerUpType == 3) {
 			MainSketch.curShotSize += 6;
 			MainSketch.curShotDamage += 5;
 		}
 
-		// Makes the player shot very fast, by decreases accuracy, size, speed and
+		// Makes the player shot very fast, by decreases accuracy, curSize, speed and
 		// damage
 		else if (powerUpType == 4) {
 			MainSketch.curShotTime /= 6;
