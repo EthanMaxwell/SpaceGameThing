@@ -17,7 +17,7 @@ public class OvalShooter extends Shooter {
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
 	 */
-	protected OvalShooter(float x, float y) {
+	public OvalShooter(float x, float y) {
 		super(x, y);
 	}
 

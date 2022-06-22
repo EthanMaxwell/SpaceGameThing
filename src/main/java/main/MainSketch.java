@@ -1,6 +1,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import enemies.Enemy;
 import enemies.StarMine;
@@ -65,11 +67,6 @@ public class MainSketch extends PApplet {
 			playerScore, // Players current game score
 			gameScreen, // Current menu screen the player is in
 			difficulty; // Difficulty from -1 (easy), 0 (normal) or 1 (hard)
-
-	private static final int[][] WAVE_DATA = {
-			// 0 , 1 , 2 , 3 , 4
-			{ 30, 0, 5, 0, 1 }, { 30, 3, 10, 0, 3 }, { 20, 8, 30, 0, 4 }, { 10, 12, 10, 1, 8 }, { 5, 5, 5, 1, 33 },
-			{ 4, 10, 5, 3, 20 }, { 3, 5, 5, 5, 20 }, { 2, 5, 10, 8, 25 }, { 1, 15, 30, 7, 30 }, { 1, 1, 1, 1, 2 }, };
 
 	private boolean gameRunning = false; // Whether the actual game is running, or just menus
 
@@ -314,7 +311,7 @@ public class MainSketch extends PApplet {
 		int waveTime = (time + 1) % WAVE_TIME;// Extract time through the current wave for time
 
 		// Spawn appropriate enemies for this frame
-		for (int i = 0; i < WAVE_DATA[0].length; i++) {
+		for (int i = 0; i < WaveData.waveData.get(waveNum); i++) {
 			int spawnRate;// Rate at which to spawn enemies
 			// If on the last wave of data onwards make spawn rate last wave values * wave
 			// num

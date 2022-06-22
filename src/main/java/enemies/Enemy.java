@@ -1,5 +1,10 @@
 package enemies;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import main.MainSketch;
 import objects.Shot;
 import processing.core.PVector;
@@ -160,4 +165,5 @@ public abstract class Enemy {
 	public float getPosY() {
 		return position.y;
 	}
+
 }

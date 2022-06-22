@@ -18,7 +18,7 @@ public class StarMine extends Enemy {
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
 	 */
-	protected StarMine(float x, float y) {
+	public StarMine(float x, float y) {
 		super(x, y);
 	}
 

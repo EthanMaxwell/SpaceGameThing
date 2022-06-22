@@ -6,6 +6,10 @@
 	<artifactId>MyJavaVersionOfSpaceGameThing</artifactId>
 	<version>1</version>
 
+	<properties>
+		<maven.compiler.release>11</maven.compiler.release>
+	</properties>
+
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.processing/core -->
 		<dependency>

@@ -16,7 +16,7 @@ public class SquareCharger extends Charger {
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
 	 */
-	protected SquareCharger(float x, float y) {
+	public SquareCharger(float x, float y) {
 		super(x, y);
 	}
 

@@ -18,7 +18,7 @@ public class HeavyShooter extends Shooter {
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
 	 */
-	protected HeavyShooter(float x, float y) {
+	public HeavyShooter(float x, float y) {
 		super(x, y);
 	}
 

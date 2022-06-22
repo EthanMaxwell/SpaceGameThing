@@ -16,7 +16,7 @@ public class TriangleCharger extends Charger {
 	 * @param x Initial x position of the enemy
 	 * @param y Initial y position of the enemy
 	 */
-	protected TriangleCharger(float x, float y) {
+	public TriangleCharger(float x, float y) {
 		super(x, y);
 	}
 
