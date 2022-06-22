@@ -67,7 +67,24 @@ public abstract class Enemy {
 	 * 
 	 * @param canvas The canvas to draw the enemy on
 	 */
-	abstract public void drawEnemy(MainSketch canvas);
+	public void drawEnemy(MainSketch canvas) {
+		canvas.fill(redColour, greenColour, blueColour); // Set the colour to the correct one
+
+		canvas.pushMatrix(); // Matrix of this enemy
+		canvas.translate(position.x, position.y);
+		canvas.rotate(angle);
+		
+		drawEnemyShape(canvas);
+		
+		canvas.popMatrix();
+	}
+
+	/**
+	 * Draw the shape for this enemy.
+	 * 
+	 * @param canvas The canvas to draw the shape on
+	 */
+	protected abstract void drawEnemyShape(MainSketch canvas);
 
 	/**
 	 * Point enemy at and move towards given the players ship.
@@ -75,7 +92,25 @@ public abstract class Enemy {
 	 * @param shipPos    Position of player ship
 	 * @param difficulty The current game difficulty
 	 */
-	abstract public void moveEnemy(PVector shipPos, int difficulty);
+	public void moveEnemy(PVector shipPos, int difficulty) {
+		age++;
+		
+		position.x += Math.cos(angle) * speed * (1 + difficulty * SPEED_DIF);
+		position.y += Math.sin(angle) * speed * (1 + difficulty * SPEED_DIF);
+		float angleToShip = (float) Math.atan((position.y - shipPos.y) / (position.x - shipPos.x));
+		if (shipPos.x < position.x) {
+			angleToShip += Math.PI;
+		}
+		
+		modVelocity(angleToShip);
+	}
+
+	/**
+	 * Modify the angle and velocity of the ship
+	 * 
+	 * @param angleToShip
+	 */
+	protected abstract void modVelocity(float angleToShip);
 
 	/**
 	 * Try to make a new shot for this enemy. Returns null if the enemy is not

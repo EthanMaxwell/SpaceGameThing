@@ -179,6 +179,8 @@ public class Enemy2 {
 		if (shipPos.x < enPos.x) {
 			angleToShip += Math.PI;
 		}
+		
+		
 		// Type 0
 		if (enType == 0) {
 			if (enAngle - angleToShip > Math.PI) {
