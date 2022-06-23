@@ -1,4 +1,5 @@
 package objects;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -20,6 +21,8 @@ public class Flame {
 	private final static float MAX_VEL = 2;
 	/** Percentage flame slows to each step */
 	private final static float SLOW_AMOUNT = 0.97f;
+	/** How much the slow amount can vary */
+	private final static float SLOW_VARIANCE = 0.1f;
 
 	// Values for each thruster
 	/** Position of the flame */
@@ -56,7 +59,7 @@ public class Flame {
 	public void drawFlame(PApplet canvas) {
 		flameAge--; // Age the flame
 		flamePos.add(flameVel); // Move the flame
-		flameVel.mult(SLOW_AMOUNT); // Slow the flame based on it's speed
+		flameVel.mult(SLOW_AMOUNT + random(-SLOW_VARIANCE, SLOW_VARIANCE)); // Slow the flame based on it's speed
 		// Colour flame between red and yellow based on shootTimer
 		canvas.fill(255, (flameStartAge - flameAge) * 255 / flameStartAge, 0);
 		// Draw the flame
