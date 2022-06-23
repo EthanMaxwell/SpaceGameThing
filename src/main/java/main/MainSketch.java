@@ -308,15 +308,15 @@ public class MainSketch extends PApplet {
 	 * the WaveData It creates specified quantity of enemies of the time of the wave
 	 */
 	private void makeEnemies() {
-		int waveNum = Math.min(time / WAVE_TIME, WaveData.waveData.size() - 1);// Extract the wave number from the time
+		int waveNum = 500;/*time / WAVE_TIME;*/// Extract the wave number from the time
 		int waveTime = (time + 1) % WAVE_TIME;// Extract time through the current wave for time
-		Map<Class<? extends Enemy>, Integer> waveData = WaveData.waveData.get(waveNum);
-		
+		Map<Class<? extends Enemy>, Integer> waveData = WaveData.waveData.get(Math.min(waveNum, WaveData.waveData.size() - 1));
+
 		// Spawn appropriate enemies for this frame
 		for (Class<? extends Enemy> enemyClass : waveData.keySet()) {
 			int spawnRate;
 			// For last set of data onwards make spawn rate last wave values * wave num
-			if (waveNum >=  WaveData.waveData.size() - 1) {
+			if (waveNum >= WaveData.waveData.size() - 1) {
 				spawnRate = waveData.get(enemyClass) * waveNum;
 			}
 			// Otherwise extract spawn rate normally
@@ -328,8 +328,10 @@ public class MainSketch extends PApplet {
 			if (spawnRate != 0 && waveTime % (WAVE_TIME / spawnRate) == WAVE_TIME / (2 * spawnRate)) {
 				try {
 					// Create new enemy through reflection
-					enemies.add(enemyClass.getConstructor(float.class, float.class).newInstance(0, 0));
-				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					enemies.add(enemyClass.getConstructor(float.class, float.class)
+							.newInstance(random(-WORLD_RAD, WORLD_RAD), random(-WORLD_RAD, WORLD_RAD)));
+				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
 					// Should be unreachable
 					throw new RuntimeException("Class " + enemyClass + " does not have valid constuctor...");
 				}

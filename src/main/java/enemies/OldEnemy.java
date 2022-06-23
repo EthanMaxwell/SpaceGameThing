@@ -20,7 +20,7 @@ import processing.core.PVector;
  * behaviours
  */
 @Deprecated
-public class Enemy2 {
+public class OldEnemy {
 	// All the data about the different enemy types :
 
 	// Type 0, Simple square that move towards player
@@ -84,7 +84,7 @@ public class Enemy2 {
 	int enScore; // Score to be given upon being destroyed
 
 	// Make new enemy at given x and y positions with given type
-	public Enemy2(float x, float y, int type) {
+	public OldEnemy(float x, float y, int type) {
 		// Set general enemy information to stuff given
 		enType = type;
 		enPos = new PVector(x, y);
