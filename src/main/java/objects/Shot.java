@@ -15,7 +15,7 @@ public class Shot {
 	private float shotAngle;
 	/** The velocity of the shot */
 	private float shotVel;
-	/** The diameter size of the shot */
+	/** The diameter curSize of the shot */
 	private float shotDiam;
 	/** The damage of the shot */
 	private float shotDamage;
@@ -79,7 +79,7 @@ public class Shot {
 	}
 
 	/**
-	 * Check if the shot is colliding with a ship of given location, size and
+	 * Check if the shot is colliding with a ship of given location, curSize and
 	 * hostility.
 	 * 
 	 * @param shipX    Ships x location

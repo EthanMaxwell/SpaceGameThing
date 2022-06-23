@@ -12,7 +12,7 @@ public class Flame {
 	// Constant values for the flames
 	/** Max time a flame can last */
 	private final static int MAX_AGE = 50;
-	/** Max size a flame can be */
+	/** Max curSize a flame can be */
 	private final static int MAX_SIZE = 15;
 	/** Half angle of the thruster */
 	private final static float ANGLE_VAR = 0.7f;
@@ -26,11 +26,11 @@ public class Flame {
 	private PVector flamePos;
 	/** Velocity of the flame */
 	private PVector flameVel;
-	/** Initial size of the flame */
+	/** Initial curSize of the flame */
 	private int flameSize = (int) random(MAX_SIZE / 2, MAX_SIZE);
 	/** How long the flame will last */
 	private int flameStartAge = (int) random(MAX_AGE / 2, MAX_AGE);
-	/** The count down of the flames age */
+	/** The count down of the flames shootTimer */
 	private int flameAge = flameStartAge;
 
 	/**
@@ -57,7 +57,7 @@ public class Flame {
 		flameAge--; // Age the flame
 		flamePos.add(flameVel); // Move the flame
 		flameVel.mult(SLOW_AMOUNT); // Slow the flame based on it's speed
-		// Colour flame between red and yellow based on age
+		// Colour flame between red and yellow based on shootTimer
 		canvas.fill(255, (flameStartAge - flameAge) * 255 / flameStartAge, 0);
 		// Draw the flame
 		canvas.ellipse(flamePos.x, flamePos.y, flameSize * flameAge / flameStartAge,
@@ -76,9 +76,9 @@ public class Flame {
 	}
 
 	/**
-	 * Get the age of the flame
+	 * Get the shootTimer of the flame
 	 * 
-	 * @return The flames age
+	 * @return The flames shootTimer
 	 */
 	public int getAge() {
 		return flameAge;

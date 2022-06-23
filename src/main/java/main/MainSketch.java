@@ -1,7 +1,12 @@
 package main;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import enemies.Enemy;
+import enemies.StarMine;
 import objects.Button;
 import objects.Crate;
 import objects.Flame;
@@ -10,7 +15,7 @@ import objects.Shot;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class MainSketch extends PApplet{
+public class MainSketch extends PApplet {
 //All constants
 	private static final float SHIP_ACC = 0.2f, // Max acceleration of the ship
 			SHIP_ROTACC = 0.006f, // Max rotational acceleration of the ship
@@ -46,7 +51,7 @@ public class MainSketch extends PApplet{
 			screenPos, // Position on whole map of the screen
 			screenVel; // Velocities of the screen panning
 
-	//TODO: Oh, dear God no!
+	// TODO: Oh, dear God no!
 	public static float curShipAcc, // The ships current acceleration
 			shipAngle, // The ships current angle
 			shipRotVel, // The ships current rotational velocity
@@ -63,20 +68,6 @@ public class MainSketch extends PApplet{
 			playerScore, // Players current game score
 			gameScreen, // Current menu screen the player is in
 			difficulty; // Difficulty from -1 (easy), 0 (normal) or 1 (hard)
-	
-	private static final int[][] WAVE_DATA = {
-			  //0  , 1  , 2  , 3  , 4 
-			  { 30 , 0  , 5  , 0  , 1  },
-			  { 30 , 3  , 10 , 0  , 3  },
-			  { 20 , 8  , 30 , 0  , 4  },
-			  { 10 , 12 , 10 , 1  , 8  },
-			  { 5  , 5  , 5  , 1  , 33 },
-			  { 4  , 10 , 5  , 3  , 20 },
-			  { 3  , 5  , 5  , 5  , 20 },
-			  { 2  , 5  , 10 , 8  , 25 },
-			  { 1  , 15 , 30 , 7  , 30 },
-			  { 1  , 1  , 1  , 1  , 2  },
-			};
 
 	private boolean gameRunning = false; // Whether the actual game is running, or just menus
 
@@ -89,16 +80,16 @@ public class MainSketch extends PApplet{
 	private ArrayList<PowerUp> powerUps; // All the crates across the map
 	private ArrayList<Button> buttons = new ArrayList<Button>(); // All the button that appear in menus
 
-	public static void main(String[] args){
-		String[] processingArgs = {"MainSketch"};
+	public static void main(String[] args) {
+		String[] processingArgs = { "MainSketch" };
 		MainSketch sketch = new MainSketch();
 		PApplet.runSketch(processingArgs, sketch);
 	}
-	
+
 	public void settings() {
 		fullScreen(); // Game runs best on fullscreen
-		//TODO: Font problems...
-		//textFont(loadFont("CenturyGothic-100.vlw")); // Use Century Gothic font
+		// TODO: Font problems...
+		// textFont(loadFont("CenturyGothic-100.vlw")); // Use Century Gothic font
 		restartGame(); // Inialise all the game values
 		// Create all the random star positions
 		for (int i = 0; i < stars.length; i++) {
@@ -106,14 +97,15 @@ public class MainSketch extends PApplet{
 					random(-WORLD_RAD - 500, WORLD_RAD + 500));
 		}
 		// Make all the buttons that will appear in the menus
-		buttons.add(new Button("Start", 1f/2, 1f/2, 300, 140)); // Screen 0
-		buttons.add(new Button("Easy", 1f/4, 1f/2, 250, 120)); // Screen 1
-		buttons.add(new Button("Normal", 1f/2, 1f/2, 250, 120)); // Screen 1
-		buttons.add(new Button("Hard", 3f/4, 1f/2, 250, 120)); // Screen 1
-		buttons.add(new Button("Play again", 1f/2, 4f/6, 400, 120)); // Screen 2
-		buttons.add(new Button("Exit", 1f/2, 6f/7, 150, 80)); // All screens
+		buttons.add(new Button("Start", 1f / 2, 1f / 2, 300, 140)); // Screen 0
+		buttons.add(new Button("Easy", 1f / 4, 1f / 2, 250, 120)); // Screen 1
+		buttons.add(new Button("Normal", 1f / 2, 1f / 2, 250, 120)); // Screen 1
+		buttons.add(new Button("Hard", 3f / 4, 1f / 2, 250, 120)); // Screen 1
+		buttons.add(new Button("Play again", 1f / 2, 4f / 6, 400, 120)); // Screen 2
+		buttons.add(new Button("Exit", 1f / 2, 6f / 7, 150, 80)); // All screens
 	}
 
+	@Override
 	public void draw() {
 
 		background(0); // Make black background
@@ -223,7 +215,7 @@ public class MainSketch extends PApplet{
 		}
 		// Game screen 2:End game
 		else {
-			textSize(50); // Text size on end game information
+			textSize(50); // Text curSize on end game information
 			// Write out all the end game information
 
 			text("You got a score of : " + playerScore, width / 2, height / 3);
@@ -260,7 +252,7 @@ public class MainSketch extends PApplet{
 		// Draw all enemies except mines onto minimap area
 		for (Enemy curEnemy : enemies) {
 			fill(255, 10, 10); // Red for enemy dots on minimap
-			if (curEnemy.getType() != 2) { // If not a mine draw the dot
+			if (!(curEnemy instanceof StarMine)) { // If not a mine draw the dot
 				ellipse(width - WORLD_RAD / 2 * MM_SIZE - MM_GAP + curEnemy.getPosX() / 2 * MM_SIZE,
 						height - WORLD_RAD / 2 * MM_SIZE - MM_GAP + curEnemy.getPosY() / 2 * MM_SIZE, MM_DOT_SIZE,
 						MM_DOT_SIZE);
@@ -316,25 +308,33 @@ public class MainSketch extends PApplet{
 	 * the WaveData It creates specified quantity of enemies of the time of the wave
 	 */
 	private void makeEnemies() {
-		int waveNum = time / WAVE_TIME;// Extract the wave number from the time
+		int waveNum = 500;/*time / WAVE_TIME;*/// Extract the wave number from the time
 		int waveTime = (time + 1) % WAVE_TIME;// Extract time through the current wave for time
+		Map<Class<? extends Enemy>, Integer> waveData = WaveData.waveData.get(Math.min(waveNum, WaveData.waveData.size() - 1));
 
 		// Spawn appropriate enemies for this frame
-		for (int i = 0; i < WAVE_DATA[0].length; i++) {
-			int spawnRate;// Rate at which to spawn enemies
-			// If on the last wave of data onwards make spawn rate last wave values * wave
-			// num
-			if (waveNum >= WAVE_DATA.length - 1) {
-				spawnRate = WAVE_DATA[WAVE_DATA.length - 1][i] * waveNum;
+		for (Class<? extends Enemy> enemyClass : waveData.keySet()) {
+			int spawnRate;
+			// For last set of data onwards make spawn rate last wave values * wave num
+			if (waveNum >= WaveData.waveData.size() - 1) {
+				spawnRate = waveData.get(enemyClass) * waveNum;
 			}
 			// Otherwise extract spawn rate normally
 			else {
-				spawnRate = WAVE_DATA[waveNum][i];
+				spawnRate = waveData.get(enemyClass);
 			}
 
 			// Check if it's that enemies frame to be spawned
 			if (spawnRate != 0 && waveTime % (WAVE_TIME / spawnRate) == WAVE_TIME / (2 * spawnRate)) {
-				enemies.add(new Enemy(random(-WORLD_RAD, WORLD_RAD), random(-WORLD_RAD, WORLD_RAD), i));
+				try {
+					// Create new enemy through reflection
+					enemies.add(enemyClass.getConstructor(float.class, float.class)
+							.newInstance(random(-WORLD_RAD, WORLD_RAD), random(-WORLD_RAD, WORLD_RAD)));
+				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+					// Should be unreachable
+					throw new RuntimeException("Class " + enemyClass + " does not have valid constuctor...");
+				}
 			}
 		}
 	}
@@ -396,7 +396,7 @@ public class MainSketch extends PApplet{
 
 //Draws the players ship with the little cannon on the top
 	private void drawShip() {
-		// Matrix of the ships position and size
+		// Matrix of the ships position and curSize
 		pushMatrix();
 		translate(shipPos.x, shipPos.y);
 		scale(16 / (float) SHIP_RAD);
@@ -570,7 +570,7 @@ public class MainSketch extends PApplet{
 //Draw all the current power up to the screen
 	private void showPowerUps() {
 		fill(255);// White
-		textSize(30);// power up text size
+		textSize(30);// power up text curSize
 		// The power ups need to know what number they are to be drawn
 		int powerUpNum = 0;
 		// Cycle through all the power up so they can be drawn
@@ -603,7 +603,7 @@ public class MainSketch extends PApplet{
 		time = WAVE_TIME * (difficulty + 1);
 	}
 
-	 /*
+	/*
 	 * Run when the player just clicks the mouse Not used in game, only in the menus
 	 */
 	public void mouseReleased() {
