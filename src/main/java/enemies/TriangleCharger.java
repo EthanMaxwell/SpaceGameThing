@@ -1,6 +1,6 @@
 package enemies;
 
-import main.MainSketch;
+import processing.core.PApplet;
 
 /**
  * A fast triangle enemy that charges towards player, kamikaze style.
@@ -51,7 +51,7 @@ public class TriangleCharger extends Charger {
 	}
 
 	@Override
-	public void drawEnemyShape(MainSketch canvas) {
+	public void drawEnemyShape(PApplet canvas) {
 		canvas.triangle(getSize() / 2, 0, -getSize() / 4, getSize() / 3, -getSize() / 4, -getSize() / 3);
 	}
 }

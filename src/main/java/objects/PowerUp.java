@@ -80,7 +80,7 @@ public class PowerUp {
 	 * 
 	 * @param canvas
 	 */
-	public void drawPowerUp(int powerUpNum, MainSketch canvas) {
+	public void drawPowerUp(int powerUpNum, PApplet canvas) {
 		// TODO:Remove
 		canvas.text(POWER_UP_NAMES[powerUpType] + " " + (powerUpTime / 60 + 1), 15, canvas.height - 30 * powerUpNum - 10);
 	}

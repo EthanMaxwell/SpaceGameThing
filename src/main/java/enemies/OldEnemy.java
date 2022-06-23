@@ -1,7 +1,7 @@
 package enemies;
 
-import main.MainSketch;
 import objects.Shot;
+import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
 
@@ -133,7 +133,7 @@ public class OldEnemy {
 	}
 
 	// Draw the enemy
-	public void drawEnemy(MainSketch canvas) {
+	public void drawEnemy(PApplet canvas) {
 		canvas.fill(enRed, enGreen, enBlue); // Set the colour to the correct one
 
 		canvas.pushMatrix(); // Matrix of this enemy

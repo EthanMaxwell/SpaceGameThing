@@ -1,5 +1,5 @@
 package objects;
-import main.MainSketch;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -49,7 +49,7 @@ public class Shot {
 	 * 
 	 * @param canvas The canvas to draw the shot on
 	 */
-	public void drawShot(MainSketch canvas) {
+	public void drawShot(PApplet canvas) {
 		if (shotHostile) {
 			canvas.fill(255, 0, 0); // Red
 		} else {

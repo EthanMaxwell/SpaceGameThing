@@ -1,7 +1,7 @@
 package enemies;
 
-import main.MainSketch;
 import objects.Shot;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -67,7 +67,7 @@ public abstract class Enemy {
 	 * 
 	 * @param canvas The canvas to draw the enemy on
 	 */
-	public void drawEnemy(MainSketch canvas) {
+	public void drawEnemy(PApplet canvas) {
 		canvas.fill(redColour, greenColour, blueColour); // Set the colour to the correct one
 
 		canvas.pushMatrix(); // Matrix of this enemy
@@ -84,7 +84,7 @@ public abstract class Enemy {
 	 * 
 	 * @param canvas The canvas to draw the shape on
 	 */
-	protected abstract void drawEnemyShape(MainSketch canvas);
+	protected abstract void drawEnemyShape(PApplet canvas);
 
 	/**
 	 * Point enemy at and move towards given the players ship.

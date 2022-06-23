@@ -1,5 +1,5 @@
 package objects;
-import main.MainSketch;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -53,7 +53,7 @@ public class Flame {
 	 * 
 	 * @param canvas Canvas to draw flame too.
 	 */
-	public void drawFlame(MainSketch canvas) {
+	public void drawFlame(PApplet canvas) {
 		flameAge--; // Age the flame
 		flamePos.add(flameVel); // Move the flame
 		flameVel.mult(SLOW_AMOUNT); // Slow the flame based on it's speed

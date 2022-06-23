@@ -2,7 +2,6 @@ package main;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import enemies.Enemy;
@@ -83,7 +82,7 @@ public class MainSketch extends PApplet {
 	public static void main(String[] args) {
 		String[] processingArgs = { "MainSketch" };
 		MainSketch sketch = new MainSketch();
-		PApplet.runSketch(processingArgs, sketch);
+		MainSketch.runSketch(processingArgs, sketch);
 	}
 
 	public void settings() {
@@ -308,9 +307,10 @@ public class MainSketch extends PApplet {
 	 * the WaveData It creates specified quantity of enemies of the time of the wave
 	 */
 	private void makeEnemies() {
-		int waveNum = 500;/*time / WAVE_TIME;*/// Extract the wave number from the time
+		int waveNum = time / WAVE_TIME; // Extract the wave number from the time
 		int waveTime = (time + 1) % WAVE_TIME;// Extract time through the current wave for time
-		Map<Class<? extends Enemy>, Integer> waveData = WaveData.waveData.get(Math.min(waveNum, WaveData.waveData.size() - 1));
+		Map<Class<? extends Enemy>, Integer> waveData = WaveData.waveData
+				.get(Math.min(waveNum, WaveData.waveData.size() - 1));
 
 		// Spawn appropriate enemies for this frame
 		for (Class<? extends Enemy> enemyClass : waveData.keySet()) {

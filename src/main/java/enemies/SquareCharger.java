@@ -1,6 +1,6 @@
 package enemies;
 
-import main.MainSketch;
+import processing.core.PApplet;
 
 /**
  * A slow square enemy that charges towards player, kamikaze style.
@@ -51,7 +51,7 @@ public class SquareCharger extends Charger {
 	}
 
 	@Override
-	public void drawEnemyShape(MainSketch canvas) {
+	public void drawEnemyShape(PApplet canvas) {
 		canvas.rect(-getSize() / 2, -getSize() / 2, getSize(), getSize());
 
 	}

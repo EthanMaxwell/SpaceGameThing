@@ -1,7 +1,7 @@
 package enemies;
 
-import main.MainSketch;
 import objects.Shot;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -38,7 +38,7 @@ public class StarMine extends Enemy {
 	}
 
 	@Override
-	protected void drawEnemyShape(MainSketch canvas) {
+	protected void drawEnemyShape(PApplet canvas) {
 		// Draw a six pointed star
 		canvas.triangle(0, getSize() / 2, (float) Math.sqrt(0.75) * getSize() / 2, -getSize() / 4,
 				(float) (-Math.sqrt(0.75f) * getSize() / 2), -getSize() / 4);

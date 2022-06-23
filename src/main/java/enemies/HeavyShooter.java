@@ -1,6 +1,6 @@
 package enemies;
 
-import main.MainSketch;
+import processing.core.PApplet;
 import processing.core.PConstants;
 
 /**
@@ -73,7 +73,7 @@ public class HeavyShooter extends Shooter {
 	}
 
 	@Override
-	protected void drawEnemyShape(MainSketch canvas) {
+	protected void drawEnemyShape(PApplet canvas) {
 		// Draw a flat nosed triangle like shape
 		canvas.beginShape();
 		canvas.vertex(getSize() / 2, getSize() / 3);

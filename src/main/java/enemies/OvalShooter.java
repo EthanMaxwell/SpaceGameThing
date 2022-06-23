@@ -1,6 +1,6 @@
 package enemies;
 
-import main.MainSketch;
+import processing.core.PApplet;
 
 /**
  * A oval shaped enemy that shoots light bullets at the player from a
@@ -72,7 +72,7 @@ public class OvalShooter extends Shooter {
 	}
 
 	@Override
-	protected void drawEnemyShape(MainSketch canvas) {
+	protected void drawEnemyShape(PApplet canvas) {
 		canvas.ellipse(0, 0, getSize(), getSize() * 0.7f);
 	}
 }

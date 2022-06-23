@@ -1,5 +1,5 @@
 package objects;
-import main.MainSketch;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -35,7 +35,7 @@ public class Button {
 	 *
 	 * @param canvas The canvas to draw the button too
 	 */
-	public void drawButton(MainSketch canvas) {
+	public void drawButton(PApplet canvas) {
 		PVector buttonLoc = new PVector();
 		buttonLoc.x = canvas.width * buttonPos.x;
 		buttonLoc.y = canvas.height * buttonPos.y;
@@ -78,7 +78,7 @@ public class Button {
 	 * @param canvas The canvas the button is drawn on
 	 * @return If the mouse is on the button
 	 */
-	public boolean mouseOnButton(MainSketch canvas) {
+	public boolean mouseOnButton(PApplet canvas) {
 		return Math.abs(canvas.mouseX - canvas.width * buttonPos.x) < buttonSize.x / 2
 				&& Math.abs(canvas.mouseY - canvas.height * buttonPos.y) < buttonSize.y / 2;
 	}

@@ -1,5 +1,5 @@
 package objects;
-import main.MainSketch;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
@@ -46,7 +46,7 @@ public class Crate {
 	 * 
 	 * @param canvas The canvas to draw the crate onto
 	 */
-	public void drawCrate(MainSketch canvas) {
+	public void drawCrate(PApplet canvas) {
 		canvas.fill(10, 255, 50);
 		canvas.ellipse(cratePos.x, cratePos.y, CRATE_SIZE, CRATE_SIZE); // Draw a circle
 	}
