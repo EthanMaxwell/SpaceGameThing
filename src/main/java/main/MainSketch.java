@@ -1,5 +1,6 @@
 package main;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -307,25 +308,31 @@ public class MainSketch extends PApplet {
 	 * the WaveData It creates specified quantity of enemies of the time of the wave
 	 */
 	private void makeEnemies() {
-		int waveNum = time / WAVE_TIME;// Extract the wave number from the time
+		int waveNum = Math.min(time / WAVE_TIME, WaveData.waveData.size() - 1);// Extract the wave number from the time
 		int waveTime = (time + 1) % WAVE_TIME;// Extract time through the current wave for time
-
+		Map<Class<? extends Enemy>, Integer> waveData = WaveData.waveData.get(waveNum);
+		
 		// Spawn appropriate enemies for this frame
-		for (int i = 0; i < WaveData.waveData.get(waveNum); i++) {
-			int spawnRate;// Rate at which to spawn enemies
-			// If on the last wave of data onwards make spawn rate last wave values * wave
-			// num
-			if (waveNum >= WAVE_DATA.length - 1) {
-				spawnRate = WAVE_DATA[WAVE_DATA.length - 1][i] * waveNum;
+		for (Class<? extends Enemy> enemyClass : waveData.keySet()) {
+			int spawnRate;
+			// For last set of data onwards make spawn rate last wave values * wave num
+			if (waveNum >=  WaveData.waveData.size() - 1) {
+				spawnRate = waveData.get(enemyClass) * waveNum;
 			}
 			// Otherwise extract spawn rate normally
 			else {
-				spawnRate = WAVE_DATA[waveNum][i];
+				spawnRate = waveData.get(enemyClass);
 			}
 
 			// Check if it's that enemies frame to be spawned
 			if (spawnRate != 0 && waveTime % (WAVE_TIME / spawnRate) == WAVE_TIME / (2 * spawnRate)) {
-				enemies.add(new Enemy(random(-WORLD_RAD, WORLD_RAD), random(-WORLD_RAD, WORLD_RAD), i));
+				try {
+					// Create new enemy through reflection
+					enemies.add(enemyClass.getConstructor(float.class, float.class).newInstance(0, 0));
+				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					// Should be unreachable
+					throw new RuntimeException("Class " + enemyClass + " does not have valid constuctor...");
+				}
 			}
 		}
 	}

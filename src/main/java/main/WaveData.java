@@ -37,7 +37,7 @@ public abstract class WaveData {
 		wave.put(OvalShooter.class, 3);
 		waveData.add(wave);
 
-		// Wave two
+		// Wave three
 		wave = new HashMap<>();
 		wave.put(SquareCharger.class, 20);
 		wave.put(TriangleCharger.class, 4);

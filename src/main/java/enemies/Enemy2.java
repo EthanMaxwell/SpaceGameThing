@@ -1,10 +1,14 @@
 package enemies;
+
 import main.MainSketch;
 import objects.Shot;
 import processing.core.PConstants;
 import processing.core.PVector;
 
 /**
+ * Old enemy class, not unused. Only for referance.
+ * 
+ *
  * Types of enemies: 0. square that moves kamikazes towards player 1. oval that
  * positions itself slightly away from the player and shoots 2. Unmoving yet
  * durable star shaped mine enemy 3. Like 1, but with more health, rate of fire
@@ -15,6 +19,7 @@ import processing.core.PVector;
  * that tries to harm the player They come is various shape, sizes and
  * behaviours
  */
+@Deprecated
 public class Enemy2 {
 	// All the data about the different enemy types :
 
@@ -39,9 +44,9 @@ public class Enemy2 {
 	/** Rate of Fire */
 	private static final int ROF1 = 77;
 	/** ?? */
-	private static final int HEALTH1=2;
-/** Damage of one if it shots */
-	private static final int SHOT_DAMAGE1=3;
+	private static final int HEALTH1 = 2;
+	/** Damage of one if it shots */
+	private static final int SHOT_DAMAGE1 = 3;
 	private static final int SCORE_GIVEN1 = 3;
 
 	// Type 2, unmoving mine enemy shown as six pointed star
@@ -180,8 +185,7 @@ public class Enemy2 {
 		if (shipPos.x < enPos.x) {
 			angleToShip += Math.PI;
 		}
-		
-		
+
 		// Type 0
 		if (enType == 0) {
 			if (enAngle - angleToShip > Math.PI) {
