@@ -92,13 +92,13 @@ public abstract class Enemy {
 	 * @param shipPos    Position of player ship
 	 * @param difficulty The current game difficulty
 	 */
-	public void moveEnemy(PVector shipPos, int difficulty) {
+	public void moveEnemy(float targetX, float targetY, int difficulty) {
 		shootTimer++;
 
 		position.x += Math.cos(angle) * speed * (1 + difficulty * SPEED_DIF);
 		position.y += Math.sin(angle) * speed * (1 + difficulty * SPEED_DIF);
 
-		modVelocity(shipPos);
+		modVelocity(targetX, targetY);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public abstract class Enemy {
 	 * 
 	 * @param shipPos Position of the players ship
 	 */
-	protected abstract void modVelocity(PVector shipPos);
+	protected abstract void modVelocity(float targetX, float targetY);
 
 	/**
 	 * Try to make a new shot for this enemy. Returns null if the enemy is not
@@ -124,7 +124,7 @@ public abstract class Enemy {
 	 * @param objectDiam Diameter of the object to see if the enemy is touching
 	 * @return If the object is touching the enemy
 	 */
-	public boolean touching(float objectXLoc, float objectYLoc, int objectDiam) {
+	public boolean touching(float objectXLoc, float objectYLoc, float objectDiam) {
 		return Math.hypot(objectXLoc - position.x, objectYLoc - position.y) < (getSize() + objectDiam) / 2;
 	}
 

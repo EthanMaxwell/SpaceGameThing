@@ -24,9 +24,9 @@ public abstract class Charger extends Enemy {
 	}
 
 	@Override
-	protected void modVelocity(PVector shipPos) {
-		float angleToShip = (float) Math.atan((position.y - shipPos.y) / (position.x - shipPos.x));
-		if (shipPos.x < position.x) {
+	protected void modVelocity(float targetX, float targetY) {
+		float angleToShip = (float) Math.atan((position.y - targetY) / (position.x - targetX));
+		if (targetX < position.x) {
 			angleToShip += Math.PI;
 		}
 		

@@ -48,7 +48,7 @@ public class StarMine extends Enemy {
 	}
 
 	@Override
-	protected void modVelocity(PVector shipPos) {
+	protected void modVelocity(float targetX, float targetY) {
 		angle += 0.033f;
 	}
 

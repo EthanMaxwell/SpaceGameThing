@@ -16,54 +16,28 @@ import processing.core.PVector;
 
 public class MainSketch extends PApplet {
 //All constants
-	private static final float SHIP_ACC = 0.2f, // Max acceleration of the ship
-			SHIP_ROTACC = 0.006f, // Max rotational acceleration of the ship
-			DECEL = 0.96f, // Percentage ship slows to each step
-			SCREEN_ACC = 0.15f, // Max acceleration of the screen
-			MOVE_SIZE = 0.35f, // Players % distance toward edge of screen before screen pans
-			SHOT_INACU = 0.25f, // The inaccuracy of the players shots
-			SHOT_SIZE = 10f, // Size of the players shots
-			SHOT_VEL = 11f, // Velocity of the players shots
-			SHOT_DAMAGE = 1f, // Base damage of players shots (modified by power ups)
+	private static final float SCREEN_ACC = 0.15f, // Max acceleration of the screen
+			SCREEN_DECEL = 0.96f, MOVE_SIZE = 0.35f, // Players % distance toward edge of screen before screen pans
 			MM_SIZE = 0.2f, // Size of minimap and % of world radius
 			MM_DOT_SIZE = 5f, // Size on enemy and ally dots on the minimap
-			CRATE_DIF = 0.35f; // % difference in crate number for different difficulties
+			CRATE_DIF = 0.35f, // % difference in crate number for different difficulties
+			COLLISION_DAM = 5;
 
 	private static final int WORLD_RAD = 1022, // Half the diameter of the world
-			SHOT_TIME = 15, // Frames between each shot the player can make
-			SHIP_RAD = 20, // Radius of the players ships hitbox
 			MM_GAP = 30, // Gap between minimap and edge of screen
 			EXPL_SIZE = 35, // Fire particles in an explosion
 			WAVE_TIME = 1500, // Frames per wave aka speed it which enemies are spawned
 			STAR_SIZE = 7, // Size of background stars
 			BASE_CRATE_RATE = 120, // Default frames between crates spawning (modified by difficulty)
 			MAX_CRATES = 13, // Maximum crate that can be on screen at any one time
-			SCORE_POS = 280, // Distance between the players score and the right side of the screen
-			BASE_HEALTH = 35, // Player normal starting health (modified by difficulty)
-			HEALTH_DIF = 15; // Difference is health based off difficulty
-
-	private final int shipCol = color(0, 150, 255); // Colour of the players ship
+			SCORE_POS = 280; // Distance between the players score and the right side of the screen
 
 //All variables for storing generic game data
-	PVector shipPos, // Position of the players ship
-			shipVel, // Velocities of the players ship
-			screenPos, // Position on whole map of the screen
+
+	private PVector screenPos, // Position on whole map of the screen
 			screenVel; // Velocities of the screen panning
 
-	// TODO: Oh, dear God no!
-	public static float curShipAcc, // The ships current acceleration
-			shipAngle, // The ships current angle
-			shipRotVel, // The ships current rotational velocity
-			curShipRotAcc, // The ships current rotational acceleration
-			curShotInacu, // The inaccuracy of the players shots
-			curShotSize, // Size of the players shots
-			curShotVel, // Velocity of the players shots
-			curShotDamage, // Current damage the player does with each shot
-			curShotTime, // current frames between each shot the player can make
-			shipHealth; // Player current health
-
-	private int shotTimer = SHOT_TIME, // Players current cooldown on shooting
-			time, // Current game time in frames
+	private int time, // Current game time in frames
 			playerScore, // Players current game score
 			gameScreen, // Current menu screen the player is in
 			difficulty; // Difficulty from -1 (easy), 0 (normal) or 1 (hard)
@@ -71,6 +45,8 @@ public class MainSketch extends PApplet {
 	private boolean gameRunning = false; // Whether the actual game is running, or just menus
 
 	private PVector[] stars = new PVector[250]; // The array of the positions of all the stars
+
+	private PlayerShip playerShip;
 
 	private ArrayList<Shot> shots; // All the players and enemy shots
 	private ArrayList<Enemy> enemies; // All the enemies
@@ -146,7 +122,6 @@ public class MainSketch extends PApplet {
 	private void runGame() {
 		// Increment timers
 		time++;
-		shotTimer++;
 
 		// Create the enemies for the frame
 		makeEnemies();
@@ -162,7 +137,7 @@ public class MainSketch extends PApplet {
 		strokeWeight(5);
 		stroke(255);
 		noFill();
-		rect(-WORLD_RAD - SHIP_RAD, -WORLD_RAD - SHIP_RAD, 2 * (WORLD_RAD + SHIP_RAD), 2 * (WORLD_RAD + SHIP_RAD));
+		rect(-WORLD_RAD, -WORLD_RAD, 2 * WORLD_RAD, 2 * WORLD_RAD);
 
 		noStroke(); // Make sure all object are displayed without a stroke
 
@@ -170,24 +145,22 @@ public class MainSketch extends PApplet {
 		modCrates(); // Do all operations to do with crates
 		drawFlames(); // Draw all the flames
 		modShots(); // Do all operations to do with shots
-		modShip(); // Do all operations to do with the players ship
+		playerShip.modShip(WORLD_RAD); // Do all operations to do with the players ship
+		playerShip.drawShip(screenPos, this);
 		modEnemies(); // DO all operations to do with enemies
 		screenPos.add(screenVel); // Move the screen
 
 		// Make they player shoot is they have clicked and they have reloaded
-		if (mousePressed && shotTimer >= curShotTime) {
-			shotTimer = 0; // Reset the timer since they last shot
-			shots.add(
-					new Shot(shipPos.x, shipPos.y,
-							atan2(mouseY - screenPos.y - shipPos.y, mouseX - screenPos.x - shipPos.x)
-									+ random(-curShotInacu, curShotInacu),
-							curShotVel, curShotSize, false, curShotDamage));
+		if (mousePressed) {
+			Shot newShot = playerShip.shoot(mouseX, mouseY, screenPos);
+			if (newShot != null)
+				shots.add(newShot);
 		}
 
 		// Check if the player has died, and if so end the game
-		if (shipHealth <= 0) {
+		if (playerShip.isDead()) {
 			gameRunning = false; // Stop the game from running
-			makeExplosion(shipPos.x, shipPos.y); // Make players ship explode
+			makeExplosion(playerShip.getXPos(), playerShip.getYPos()); // Make players ship explode
 		}
 	}
 
@@ -246,7 +219,7 @@ public class MainSketch extends PApplet {
 		noStroke();
 
 		fill(20, 240, 20); // Green colour of the health bar
-		rect(10, 10, shipHealth * 12, 20); // Health bar
+		rect(10, 10, playerShip.getHealth() * 12, 20); // Health bar
 
 		// Draw all enemies except mines onto minimap area
 		for (Enemy curEnemy : enemies) {
@@ -259,9 +232,10 @@ public class MainSketch extends PApplet {
 		}
 
 		// Draw player ship on minimap
-		fill(shipCol);
-		ellipse(width - WORLD_RAD / 2 * MM_SIZE - MM_GAP + shipPos.x / 2 * MM_SIZE,
-				height - WORLD_RAD / 2 * MM_SIZE - MM_GAP + shipPos.y / 2 * MM_SIZE, MM_DOT_SIZE, MM_DOT_SIZE);
+		fill(playerShip.getColour());
+		ellipse(width - WORLD_RAD / 2 * MM_SIZE - MM_GAP + playerShip.getXPos() / 2 * MM_SIZE,
+				height - WORLD_RAD / 2 * MM_SIZE - MM_GAP + playerShip.getYPos() / 2 * MM_SIZE, MM_DOT_SIZE,
+				MM_DOT_SIZE);
 
 		// nonfilled white lines
 		noFill();
@@ -346,34 +320,6 @@ public class MainSketch extends PApplet {
 		}
 	}
 
-	/**
-	 * Does all operations to do with the velocity of the players ship It calls the
-	 * draw function to draw the ship afterwards
-	 */
-	private void modShip() {
-		// Check if ship has collided with any of the sides and stop it if it has
-		if (shipPos.x > WORLD_RAD) { // Left wall
-			shipPos.x = WORLD_RAD;
-		} else if (shipPos.x < -WORLD_RAD) { // Right wall
-			shipPos.x = -WORLD_RAD;
-		}
-		if (shipPos.y > WORLD_RAD) { // Bottom wall
-			shipPos.y = WORLD_RAD;
-		} else if (shipPos.y < -WORLD_RAD) { // Top wall
-			shipPos.y = -WORLD_RAD;
-		}
-
-		shipRotVel += curShipRotAcc; // Increase ships rotational velocity if required
-		shipRotVel = shipRotVel * DECEL; // Decelerate the ships rotational velocity
-		shipAngle += shipRotVel; // Rotate the ship
-		shipVel.x += cos(shipAngle) * curShipAcc; // Set y velocity based off angle
-		shipVel.y += sin(shipAngle) * curShipAcc; // Set x velocity based of angle
-		shipVel.mult(DECEL); // Decelerate the ship
-		shipPos.add(shipVel); // Move the ship
-
-		drawShip();
-	}
-
 	/*
 	 * Draw all the flames, if they are past their life span, remove them Also
 	 * create new flames for the thruster of the player is accelerating
@@ -381,8 +327,10 @@ public class MainSketch extends PApplet {
 	private void drawFlames() {
 		// Make new flames for the ships thrusher if accelerating while the game is
 		// running
-		if (gameRunning && curShipAcc > 0) {
-			flames.add(new Flame(shipPos.x, shipPos.y, shipAngle));
+		if (gameRunning) {
+			Flame newFlame = playerShip.drawThruster();
+			if (newFlame != null)
+				flames.add(newFlame);
 		}
 
 		// Draw all the flames, removing the ones that are to old
@@ -394,39 +342,6 @@ public class MainSketch extends PApplet {
 		}
 	}
 
-//Draws the players ship with the little cannon on the top
-	private void drawShip() {
-		// Matrix of the ships position and curSize
-		pushMatrix();
-		translate(shipPos.x, shipPos.y);
-		scale(16 / (float) SHIP_RAD);
-
-		// Matrix specifically for the ship's body angle
-		pushMatrix();
-		rotate(shipAngle);
-
-		fill(shipCol);
-		// Shape of the body of the ship
-		beginShape();
-		vertex(-5, 0);
-		vertex(-15, -15);
-		vertex(25, 0);
-		vertex(-15, 15);
-		endShape(CLOSE);
-
-		popMatrix();
-
-		// Matrix specifically for the ships cannon angle
-		pushMatrix();
-		rotate(atan2(mouseY - screenPos.y - shipPos.y, mouseX - screenPos.x - shipPos.x));
-
-		fill(200, 200, 255);
-		triangle(-5, 8, -5, -8, 15, 0);// The shape of the cannon
-
-		popMatrix();
-		popMatrix();
-	}
-
 	/*
 	 * The sets the screen velocity so that it moves with the player It does this
 	 * through making the screen accelerate to the velocity to the player's ship if
@@ -436,38 +351,38 @@ public class MainSketch extends PApplet {
 	private void setScreenVel() {
 		// X CALCULATIONS
 		// Check if the player is too close to the right side of the screen
-		if (shipPos.x + screenPos.x > width * (1 - MOVE_SIZE)) {
-			if (-screenVel.x <= shipVel.x) {// Stop accelerating if higher velocity then player
+		if (playerShip.getXPos() + screenPos.x > width * (1 - MOVE_SIZE)) {
+			if (-screenVel.x <= playerShip.getXVel()) {// Stop accelerating if higher velocity then player
 				screenVel.x -= SCREEN_ACC;
 			}
 		}
 		// Check if the player is too close to the left side of the screen
-		else if (shipPos.x + screenPos.x < width * MOVE_SIZE) {
-			if (-screenVel.x >= shipVel.x) {// Stop accelerating if higher velocity then player
+		else if (playerShip.getXPos() + screenPos.x < width * MOVE_SIZE) {
+			if (-screenVel.x >= playerShip.getXVel()) {// Stop accelerating if higher velocity then player
 				screenVel.x += SCREEN_ACC;
 			}
 		}
 		// If the player is not near the edge of the screen, decelerate the screen
 		else {
-			screenVel.x = screenVel.x * DECEL;
+			screenVel.x = screenVel.x * SCREEN_DECEL;
 		}
 
 		// Y CALCULATIONS
 		// Check if the player is too close to the bottom of the screen
-		if (shipPos.y + screenPos.y > height * (1 - MOVE_SIZE)) {
-			if (-screenVel.y <= shipVel.y) {// Stop accelerating if higher velocity then player
+		if (playerShip.getYPos() + screenPos.y > height * (1 - MOVE_SIZE)) {
+			if (-screenVel.y <= playerShip.getYVel()) {// Stop accelerating if higher velocity then player
 				screenVel.y -= SCREEN_ACC;
 			}
 		}
 		// Check if the player is too close to the top of the screen
-		else if (shipPos.y + screenPos.y < height * MOVE_SIZE) {
-			if (-screenVel.y >= shipVel.y) {// Stop accelerating if higher velocity then player
+		else if (playerShip.getYPos() + screenPos.y < height * MOVE_SIZE) {
+			if (-screenVel.y >= playerShip.getYVel()) {// Stop accelerating if higher velocity then player
 				screenVel.y += SCREEN_ACC;
 			}
 		}
 		// If the player is not near the edge of the screen, decelerate the screen
 		else {
-			screenVel.y = screenVel.y * DECEL;
+			screenVel.y = screenVel.y * SCREEN_DECEL;
 		}
 	}
 
@@ -478,7 +393,7 @@ public class MainSketch extends PApplet {
 	private void modCrates() {
 		for (int i = crates.size() - 1; i >= 0; i--) {
 			// Check if touching player, is so, then remove it and apply power up
-			if (crates.get(i).touching(shipPos.x, shipPos.y, SHIP_RAD)) {
+			if (crates.get(i).touching(playerShip.getXPos(), playerShip.getYPos(), playerShip.getShipRad())) {
 				powerUps.add(new PowerUp(crates.get(i).getPowerUp())); // Apply the power up
 				crates.remove(i);
 			} else {
@@ -495,9 +410,9 @@ public class MainSketch extends PApplet {
 	private void modShots() {
 		for (int i = shots.size() - 1; i >= 0; i--) {
 			// Check if the shot has collided with the player
-			if (shots.get(i).touching(shipPos.x, shipPos.y, SHIP_RAD, true)) {
+			if (shots.get(i).touching(playerShip.getXPos(), playerShip.getYPos(), playerShip.getShipRad(), true)) {
 				// Damage the player and remove the shot
-				shipHealth -= shots.get(i).getDamage();
+				playerShip.damage(shots.get(i).getDamage());
 				shots.remove(i);
 			}
 			// Check if the shot has collided with a enemy, remove it if it has
@@ -523,20 +438,19 @@ public class MainSketch extends PApplet {
 	 */
 	private void modEnemies() {
 		for (int i = enemies.size() - 1; i >= 0; i--) {
-			enemies.get(i).moveEnemy(shipPos, difficulty);// Move enemy
+			enemies.get(i).moveEnemy(playerShip.getXPos(), playerShip.getYPos(), difficulty);// Move enemy
 			// Check if the enemy has collided with the player
-			if (enemies.get(i).touching(shipPos.x, shipPos.y, SHIP_RAD)) {
+			if (enemies.get(i).touching(playerShip.getXPos(), playerShip.getYPos(), playerShip.getShipRad())) {
 				makeExplosion(enemies.get(i).getPosX(), enemies.get(i).getPosY());
 				enemies.remove(i);
-				shipHealth -= 5;
+				playerShip.damage(COLLISION_DAM);
 			}
 			// Otherwise draw it and make it shoot
 			else {
 				enemies.get(i).drawEnemy(this);
 				Shot newShot = enemies.get(i).shoot();
-				if (newShot != null) {
+				if (newShot != null)
 					shots.add(newShot);
-				}
 			}
 		}
 	}
@@ -552,12 +466,13 @@ public class MainSketch extends PApplet {
 
 //Applies all the current power ups to they player
 	private void applyPowerUps() {
+		//TODO: Fix me
 		// Reset the values so they can be modified again
-		curShotDamage = SHOT_DAMAGE;
+		/*curShotDamage = SHOT_DAMAGE;
 		curShotInacu = SHOT_INACU;
 		curShotSize = SHOT_SIZE;
 		curShotVel = SHOT_VEL;
-		curShotTime = SHOT_TIME;
+		curShotTime = SHOT_TIME;*/
 
 		// Cycle through the power ups to apply them, remove finished ones
 		for (int i = powerUps.size() - 1; i >= 0; i--) {
@@ -591,15 +506,9 @@ public class MainSketch extends PApplet {
 		crates = new ArrayList<Crate>();
 		powerUps = new ArrayList<PowerUp>();
 		screenPos = new PVector(width / 2, height / 2);
-		shipPos = new PVector(0, 0);
-		shipVel = new PVector(0, 0);
+		playerShip = new PlayerShip(difficulty);
 		screenVel = new PVector(0, 0);
-		curShipAcc = 0;
-		shipAngle = 0;
-		shipRotVel = 0;
-		curShipRotAcc = 0;
 		playerScore = 0;
-		shipHealth = BASE_HEALTH - HEALTH_DIF * difficulty;
 		time = WAVE_TIME * (difficulty + 1);
 	}
 
@@ -646,16 +555,16 @@ public class MainSketch extends PApplet {
 	public void keyPressed() {
 		if (gameRunning) { // First ensure the game is actually running
 			// Player pressed forward button, so acceleration
-			if (key == 'w' && curShipAcc == 0) {
-				curShipAcc = SHIP_ACC;
+			if (key == 'w') {
+				playerShip.accelerate();
 			}
 			// Player pressed left button, so give anticlockwise rotational acceleration
-			else if (key == 'a' && curShipRotAcc == 0) {
-				curShipRotAcc -= SHIP_ROTACC;
+			else if (key == 'a') {
+				playerShip.turnLeft();
 			}
 			// Player pressed right button, so give clockwise rotational acceleration
-			else if (key == 'd' && curShipRotAcc == 0) {
-				curShipRotAcc += SHIP_ROTACC;
+			else if (key == 'd') {
+				playerShip.turnRight();
 			}
 		}
 	}
@@ -663,16 +572,12 @@ public class MainSketch extends PApplet {
 //When the player stops pressing a button make an action
 	public void keyReleased() {
 		// The player stopped pressing forwards, so stop accelerating
-		if (key == 'w' && curShipAcc > 0) {
-			curShipAcc = 0;
+		if (key == 'w') {
+			playerShip.stop();
 		}
-		// The player stopped pressing left, so stop turning
-		else if (key == 'a') {
-			curShipRotAcc = 0;
-		}
-		// The player stopped pressing right, so stop turning
-		else if (key == 'd') {
-			curShipRotAcc = 0;
+		// The player stopped pressing left or right, so stop turning
+		else if (key == 'a' || key == 'd') {
+			playerShip.stopTurning();
 		}
 	}
 }
