@@ -1,4 +1,4 @@
-package objects;
+package playerShip;
 import main.MainSketch;
 import processing.core.PApplet;
 
@@ -11,18 +11,19 @@ import processing.core.PApplet;
  * damage 4: Makes the player shot very fast, by decreases accuracy and shot
  * curSize
  */
-public class PowerUp {
+@Deprecated
+public class OldPowerUp {
 	// Names of all the different possible power ups
 	static final String[] POWER_UP_NAMES = { "Healing kit", "Sniper shot", "Rapid fire", "Heavy bullets",
 			"Ultra Rapid Fire" };
 
 	static final int POWER_UP_TIME = 600; // Frames that a power up lasts for
 
-	int powerUpType; // The number type of a power up
+	int powerUpType; // The number Type of a power up
 	int powerUpTime = POWER_UP_TIME; // Frames remaining on the power up
 
-	// Create a new power up on the given type
-	public PowerUp(int powerUpNum) {
+	// Create a new power up on the given Type
+	public OldPowerUp(int powerUpNum) {
 		powerUpType = powerUpNum;
 	}
 

@@ -74,7 +74,7 @@ public class OldEnemy {
 	PVector enPos; // Position of the enemy
 	float enAngle; // Angle the enemy is pointing
 	float enVel = 0; // Velocities of the enemy
-	int enType; // The number the represents the type of the enemy
+	int enType; // The number the represents the Type of the enemy
 	int enRed = 255; // Red value of its colour
 	int enGreen = (int) (Math.random() * 120); // Green value of its colour
 	int enBlue = (int) (Math.random() * 120); // Blue value of the ships colour
@@ -83,15 +83,15 @@ public class OldEnemy {
 	float enSize; // Enemies current curSize
 	int enScore; // Score to be given upon being destroyed
 
-	// Make new enemy at given x and y positions with given type
+	// Make new enemy at given x and y positions with given Type
 	public OldEnemy(float x, float y, int type) {
 		// Set general enemy information to stuff given
 		enType = type;
 		enPos = new PVector(x, y);
 
-		// Set the enemies data based of what type it is
+		// Set the enemies data based of what Type it is
 		// Must include a minimum of health, curSize and score
-		if (enType == 0) { // Set type 0 data
+		if (enType == 0) { // Set Type 0 data
 			enSize = SIZE0;
 			enHealth = HEALTH0;
 			enScore = SCORE_GIVEN0;
@@ -102,25 +102,25 @@ public class OldEnemy {
 			}
 		}
 
-		else if (enType == 1) { // Set type 1 data
+		else if (enType == 1) { // Set Type 1 data
 			enSize = SIZE1;
 			enHealth = HEALTH1;
 			enScore = SCORE_GIVEN1;
 		}
 
-		else if (enType == 2) { // Set type 2 data
+		else if (enType == 2) { // Set Type 2 data
 			enSize = SIZE2;
 			enHealth = HEALTH2;
 			enScore = SCORE_GIVEN2;
 		}
 
-		else if (enType == 3) { // Set type 3 data
+		else if (enType == 3) { // Set Type 3 data
 			enSize = SIZE3;
 			enHealth = HEALTH3;
 			enScore = SCORE_GIVEN3;
 		}
 
-		else if (enType == 4) { // Set type 4 data
+		else if (enType == 4) { // Set Type 4 data
 			enSize = SIZE4;
 			enHealth = HEALTH4;
 			enScore = SCORE_GIVEN4;
@@ -140,17 +140,17 @@ public class OldEnemy {
 		canvas.translate(enPos.x, enPos.y);
 		canvas.rotate(enAngle);
 
-		// If type 0, draw a square
+		// If Type 0, draw a square
 		if (enType == 0) {
 			canvas.rect(-enSize / 2, -enSize / 2, enSize, enSize);
 		}
 
-		// If type 1 draw an ellipse
+		// If Type 1 draw an ellipse
 		else if (enType == 1) {
 			canvas.ellipse(0, 0, enSize, enSize * 0.7f);
 		}
 
-		// If type 2 draw a six pointed star
+		// If Type 2 draw a six pointed star
 		else if (enType == 2) {
 			canvas.triangle(0, enSize / 2, (float) Math.sqrt(0.75) * enSize / 2, -enSize / 4,
 					(float) (-Math.sqrt(0.75f) * enSize / 2), -enSize / 4);
@@ -158,7 +158,7 @@ public class OldEnemy {
 					(float) Math.sqrt(0.75) * enSize / 2, enSize / 4);
 		}
 
-		// If type 3 draw a flat nosed triangle like shape
+		// If Type 3 draw a flat nosed triangle like shape
 		else if (enType == 3) {
 			canvas.beginShape();
 			canvas.vertex(enSize / 2, enSize / 3);
@@ -169,7 +169,7 @@ public class OldEnemy {
 			canvas.endShape(PConstants.CLOSE);
 		}
 
-		// If type 4 drawn a simple isosoles triangle
+		// If Type 4 drawn a simple isosoles triangle
 		else if (enType == 4) {
 			canvas.triangle(enSize / 2, 0, -enSize / 4, enSize / 3, -enSize / 4, -enSize / 3);
 		}
@@ -283,7 +283,7 @@ public class OldEnemy {
 		return enScore;
 	}
 
-	// Returns the enemies type
+	// Returns the enemies Type
 	public int getType() {
 		return enType;
 	}

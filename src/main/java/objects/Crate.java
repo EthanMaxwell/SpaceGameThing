@@ -53,7 +53,7 @@ public class Crate {
 
 	/** Return this crate buff
 	 * 
-	 * @return The power up type
+	 * @return The power up Type
 	 */
 	public int getPowerUp() {
 		return crateType;

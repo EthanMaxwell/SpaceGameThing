@@ -1,5 +1,8 @@
-package main;
+package playerShip;
 
+import java.util.List;
+
+import main.MainSketch;
 import objects.Flame;
 import objects.Shot;
 import processing.core.PApplet;
@@ -7,21 +10,33 @@ import processing.core.PConstants;
 import processing.core.PVector;
 
 public class PlayerShip {
-	private static final float
+
 	/** The inaccuracy of the players shots */
-	SHOT_INACU = 0.25f, SHOT_SIZE = 10f, // Size of the players shots
-			SHOT_VEL = 11f, // Velocity of the players shots
-			SHOT_DAMAGE = 1f, // Base damage of players shots (modified by power ups)
-			SHIP_ACC = 0.2f, // Max acceleration of the ship
-			SHIP_ROTACC = 0.006f, // Max rotational acceleration of the ship
-			DECEL = 0.96f; // Percentage ship slows to each step
+	private static final float SHOT_INACU = 0.25f;
+	/** Size of the players shots */
+	private static final float SHOT_SIZE = 10f;
+	/** Velocity of the players shots */
+	private static final float SHOT_VEL = 11f;
+	/** Base damage of players shots (modified by power ups) */
+	private static final float SHOT_DAMAGE = 1f;
+	/** Max acceleration of the ship */
+	private static final float SHIP_ACC = 0.2f;
+	/** Max rotational acceleration of the ship */
+	private static final float SHIP_ROTACC = 0.006f;
+	/** Percentage ship slows to each step */
+	private static final float DECEL = 0.96f;
 
-	private static final int BASE_HEALTH = 35, // Player normal starting health (modified by difficulty)
-			HEALTH_DIF = 15, // Difference is health based off difficulty
-			SHOT_TIME = 15, // Frames between each shot the player can make
-			SHIP_RAD = 20; // Radius of the players ships hitbox
+	/** Player normal starting health (modified by difficulty) */
+	private static final int BASE_HEALTH = 35;
+	/** Difference is health based off difficulty */
+	private static final int HEALTH_DIF = 15;
+	/** Frames between each shot the player can make */
+	private static final int SHOT_TIME = 15;
+	/** Radius of the players ships hit box */
+	private static final int SHIP_RAD = 20;
 
-	private final int SHIP_COLOUR = 100; // Colour of the players ship
+	/** Colour of the players ship */
+	private final int SHIP_COLOUR = 100;
 
 	private PVector shipPos, // Position of the players ship
 			shipVel; // Velocities of the players ship
@@ -37,8 +52,13 @@ public class PlayerShip {
 			curShotTime, // current frames between each shot the player can make
 			shipHealth; // Player current health
 
-	private int shotTimer = SHOT_TIME; // Players current cooldown on shooting
+	private int shotTimer = SHOT_TIME; // Players current cool down on shooting
 
+	/**
+	 * Create new player ship with default parameters for the given difficulty
+	 * 
+	 * @param difficulty
+	 */
 	public PlayerShip(int difficulty) {
 		shipPos = new PVector(0, 0);
 		shipVel = new PVector(0, 0);
@@ -94,6 +114,53 @@ public class PlayerShip {
 
 	public void damage(float damage) {
 		shipHealth -= damage;
+	}
+
+	public void applyPowerUps(List<PowerUp> powerUps) {
+
+		// Reset stats
+		curShotDamage = SHOT_DAMAGE;
+		curShotInacu = SHOT_INACU;
+		curShotSize = SHOT_SIZE;
+		curShotVel = SHOT_VEL;
+		curShotTime = SHOT_TIME;
+		
+		for (PowerUp powerUp : powerUps) {
+
+			switch (powerUp.getType()) {
+
+			// Heals player ship per frame
+			case HealingKit:
+				shipHealth += 0.022;
+				break;
+			// Increase shot accuracy, velocity and damage
+			case SniperShot:
+				curShotInacu /= 10;
+				curShotVel *= 1.65;
+				curShotDamage *= 2;
+				break;
+			// Greatly increases the players ships rate of fire
+			case RapidFire:
+				curShotTime /= 1.8;
+				break;
+			// Increase shot size and damage
+			case HeavyShot:
+				curShotSize *= 6;
+				curShotDamage *= 5;
+				break;
+			// Increase rate of fire a lot at cost of shot accuracy, size and damage
+			case URF:
+				curShotTime /= 8;
+				curShotInacu *= 2.1;
+				curShotSize /= 1.3;
+				curShotVel /= 1.4;
+				curShotDamage /= 3;
+				break;
+			default:
+				break;
+			}
+		}
+
 	}
 
 	/**

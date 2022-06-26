@@ -9,8 +9,9 @@ import enemies.StarMine;
 import objects.Button;
 import objects.Crate;
 import objects.Flame;
-import objects.PowerUp;
 import objects.Shot;
+import playerShip.PlayerShip;
+import playerShip.PowerUp;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -31,6 +32,7 @@ public class MainSketch extends PApplet {
 			BASE_CRATE_RATE = 120, // Default frames between crates spawning (modified by difficulty)
 			MAX_CRATES = 13, // Maximum crate that can be on screen at any one time
 			SCORE_POS = 280; // Distance between the players score and the right side of the screen
+	static final int POWER_UP_TIME = 600; // Frames that a power up lasts for
 
 //All variables for storing generic game data
 
@@ -394,7 +396,7 @@ public class MainSketch extends PApplet {
 		for (int i = crates.size() - 1; i >= 0; i--) {
 			// Check if touching player, is so, then remove it and apply power up
 			if (crates.get(i).touching(playerShip.getXPos(), playerShip.getYPos(), playerShip.getShipRad())) {
-				powerUps.add(new PowerUp(crates.get(i).getPowerUp())); // Apply the power up
+				powerUps.add(new PowerUp()); // Apply a random power up
 				crates.remove(i);
 			} else {
 				crates.get(i).drawCrate(this);
@@ -466,17 +468,11 @@ public class MainSketch extends PApplet {
 
 //Applies all the current power ups to they player
 	private void applyPowerUps() {
-		//TODO: Fix me
-		// Reset the values so they can be modified again
-		/*curShotDamage = SHOT_DAMAGE;
-		curShotInacu = SHOT_INACU;
-		curShotSize = SHOT_SIZE;
-		curShotVel = SHOT_VEL;
-		curShotTime = SHOT_TIME;*/
-
+		playerShip.applyPowerUps(powerUps);
 		// Cycle through the power ups to apply them, remove finished ones
 		for (int i = powerUps.size() - 1; i >= 0; i--) {
-			if (powerUps.get(i).powerUpNum()) {
+			System.out.println(powerUps.get(i).age());
+			if (powerUps.get(i).age() > POWER_UP_TIME) {
 				powerUps.remove(i);
 			}
 		}
@@ -490,7 +486,7 @@ public class MainSketch extends PApplet {
 		int powerUpNum = 0;
 		// Cycle through all the power up so they can be drawn
 		for (PowerUp curPowerUp : powerUps) {
-			curPowerUp.drawPowerUp(powerUpNum, this);
+			curPowerUp.drawPowerUp(POWER_UP_TIME, powerUpNum, this);
 			powerUpNum++; // track the number of the power up
 		}
 	}
