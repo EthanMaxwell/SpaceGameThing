@@ -2,7 +2,6 @@ package playerShip;
 
 import java.util.List;
 
-import main.MainSketch;
 import objects.Flame;
 import objects.Shot;
 import processing.core.PApplet;
