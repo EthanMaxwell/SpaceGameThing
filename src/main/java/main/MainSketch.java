@@ -25,7 +25,7 @@ public class MainSketch extends PApplet {
 			COLLISION_DAM = 5;
 
 	private static final int WORLD_RAD = 1022, // Half the diameter of the world
-			MM_GAP = 30, // Gap between mini map and edge of screen
+			MM_GAP = 30, // Gap between mini-map and edge of screen
 			EXPL_SIZE = 35, // Fire particles in an explosion
 			WAVE_TIME = 1500, // Frames per wave aka speed it which enemies are spawned
 			STAR_SIZE = 7, // Size of background stars
