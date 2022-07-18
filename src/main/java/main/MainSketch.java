@@ -19,7 +19,7 @@ public class MainSketch extends PApplet {
 //All constants
 	private static final float SCREEN_ACC = 0.15f, // Max acceleration of the screen
 			SCREEN_DECEL = 0.96f, MOVE_SIZE = 0.35f, // Players % distance toward edge of screen before screen pans
-			MM_SIZE = 0.2f, // Size of minimap and % of world radius
+			MM_SIZE = 0.2f, // Size of mini map and % of world radius
 			MM_DOT_SIZE = 5f, // Size on enemy and ally dots on the minimap
 			CRATE_DIF = 0.35f, // % difference in crate number for different difficulties
 			COLLISION_DAM = 5;
