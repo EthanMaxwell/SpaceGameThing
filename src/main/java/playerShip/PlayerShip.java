@@ -68,7 +68,15 @@ public class PlayerShip {
 		curShotTime = SHOT_TIME;
 		shipHealth = BASE_HEALTH - HEALTH_DIF * difficulty;
 	}
-
+	
+	/**
+	 * Make the ship shoot if they can. Shot direction is based of given mouse and screen position.
+	 * 
+	 * @param mouseX X position of the mouse
+	 * @param mouseY Y position of the mouse
+	 * @param screenPos Current position of the screen
+	 * @return The shot fired, null of shot can't be fired.
+	 */
 	public Shot shoot(int mouseX, int mouseY, PVector screenPos) {
 		shotTimer++;
 		if (shotTimer >= curShotTime) {
@@ -111,6 +119,10 @@ public class PlayerShip {
 		shipPos.add(shipVel); // Move the ship
 	}
 
+	/**
+	 * Damage the ship by the given value.
+	 * @param damage Amount of damage to do to the ship
+	 */
 	public void damage(float damage) {
 		shipHealth -= damage;
 	}
@@ -123,7 +135,7 @@ public class PlayerShip {
 		curShotSize = SHOT_SIZE;
 		curShotVel = SHOT_VEL;
 		curShotTime = SHOT_TIME;
-		
+
 		for (PowerUp powerUp : powerUps) {
 
 			switch (powerUp.getType()) {
@@ -201,6 +213,12 @@ public class PlayerShip {
 		canvas.popMatrix();
 	}
 
+	/**
+	 * Called every frame where new thruster flame should be drawn. return null if
+	 * no thruster is to be drawn.
+	 * 
+	 * @return The new thruster flame particle
+	 */
 	public Flame drawThruster() {
 		if (curShipAcc > 0) {
 			return new Flame(shipPos.x, shipPos.y, shipAngle);
@@ -208,58 +226,97 @@ public class PlayerShip {
 		return null;
 	}
 
+	/**
+	 * Place ship into a state of accelerating.
+	 */
 	public void accelerate() {
 		if (curShipAcc == 0)
 			curShipAcc = SHIP_ACC;
 	}
-
+	
+	/**
+	 * Place ship into a state of turning left.
+	 */
 	public void turnLeft() {
 		if (curShipRotAcc == 0)
 			curShipRotAcc -= SHIP_ROTACC;
 	}
 
+	/**
+	 * Place ship into a state of turning right.
+	 */
 	public void turnRight() {
 		if (curShipRotAcc == 0)
 			curShipRotAcc = SHIP_ROTACC;
 	}
 
+	/**
+	 * Place the ship into a state of not accelerating.
+	 */
 	public void stop() {
 		if (curShipAcc > 0)
 			curShipAcc = 0;
 	}
-
+	
+	/**
+	 * Place the ship into a state on not turning.
+	 */
 	public void stopTurning() {
 		curShipRotAcc = 0;
 	}
-
+	
+	/**
+	 * @return If the ship is currently dead
+	 */
 	public boolean isDead() {
 		return shipHealth <= 0;
 	}
 
+	/**
+	 * @return x position of ship
+	 */
 	public float getXPos() {
 		return shipPos.x;
 	}
 
+	/**
+	 * @return y position of ship
+	 */
 	public float getYPos() {
 		return shipPos.y;
 	}
-
+	
+	/**
+	 * @return The ship current health
+	 */
 	public float getHealth() {
 		return shipHealth;
 	}
-
+	
+	/**
+	 * @return Int value of the ships colour
+	 */
 	public int getColour() {
 		return SHIP_COLOUR;
 	}
-
+	
+	/**
+	 * @return x velocity of ship
+	 */
 	public float getXVel() {
 		return shipVel.x;
 	}
 
+	/**
+	 * @return y velocity of ship
+	 */
 	public float getYVel() {
 		return shipVel.y;
 	}
 
+	/**
+	 * @return Collision radius of the ship
+	 */
 	public float getShipRad() {
 		return SHIP_RAD;
 	}
