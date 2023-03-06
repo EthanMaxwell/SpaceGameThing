@@ -4,6 +4,7 @@ import java.util.List;
 
 import objects.Flame;
 import objects.Shot;
+import powerups.PowerUp;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;

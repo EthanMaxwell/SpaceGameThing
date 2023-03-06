@@ -1,10 +1,11 @@
-package playerShip;
+package powerups;
 
+import playerShip.PlayerShip;
 import processing.core.PApplet;
 
-public class PowerUp {
+public abstract class PowerUp {
 
-	enum Type {
+	/**enum Type {
 		HealingKit("Healing Kit"), SniperShot("Sniper Shot"), RapidFire("Rapid Fire"), HeavyShot("Heavy Shot"),
 		URF("Ultra Rapid Fire");
 
@@ -13,10 +14,10 @@ public class PowerUp {
 		private Type(String name) {
 			powerUpName = name;
 		}
-	}
+	}*/
 
 	private int age = 0;
-	private Type type = Type.values()[(int) (Math.random() * Type.values().length)];
+	//private Type type = Type.values()[(int) (Math.random() * Type.values().length)];
 
 	/**
 	 * Draw the text in the bottom left to show the time left on the power up
@@ -41,4 +42,7 @@ public class PowerUp {
 	public String getName() {
 		return type.powerUpName;
 	}
+	
+	public abstract void apply(PlayerShip ship);
+	public abstract void remove(PlayerShip ship);
 }

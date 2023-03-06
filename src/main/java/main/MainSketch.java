@@ -11,7 +11,7 @@ import objects.Crate;
 import objects.Flame;
 import objects.Shot;
 import playerShip.PlayerShip;
-import playerShip.PowerUp;
+import powerups.PowerUp;
 import processing.core.PApplet;
 import processing.core.PVector;
 
