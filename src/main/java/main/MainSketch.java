@@ -12,6 +12,7 @@ import objects.Flame;
 import objects.Shot;
 import playerShip.PlayerShip;
 import powerups.PowerUp;
+import powerups.PowerUpManager;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -54,7 +55,9 @@ public class MainSketch extends PApplet {
 	private ArrayList<Enemy> enemies; // All the enemies
 	private ArrayList<Flame> flames; // All the flame from player thruster
 	private ArrayList<Crate> crates; // All the crates across the map
-	private ArrayList<PowerUp> powerUps; // All the crates across the map
+	
+
+	private PowerUpManager powerUpManager; // All the crates across the map
 	private ArrayList<Button> buttons = new ArrayList<Button>(); // All the button that appear in menus
 
 	public static void main(String[] args) {
@@ -132,8 +135,8 @@ public class MainSketch extends PApplet {
 				&& crates.size() < MAX_CRATES) {
 			crates.add(new Crate(random(-WORLD_RAD, WORLD_RAD), random(-WORLD_RAD, WORLD_RAD)));
 		}
-
-		applyPowerUps(); // Apply power ups
+		
+		powerUpManager.passTime(); // Apply power ups
 
 		// Draw the border lines around the area the player can travel
 		strokeWeight(5);
@@ -252,7 +255,7 @@ public class MainSketch extends PApplet {
 		rect(width - WORLD_RAD * MM_SIZE - MM_GAP, height - WORLD_RAD * MM_SIZE - MM_GAP, WORLD_RAD * MM_SIZE,
 				WORLD_RAD * MM_SIZE);
 
-		showPowerUps(); // Draw power up onto GUI
+		//showPowerUps(); // Draw power up onto GUI
 
 		// Show players score
 		textSize(50);
@@ -396,7 +399,7 @@ public class MainSketch extends PApplet {
 		for (int i = crates.size() - 1; i >= 0; i--) {
 			// Check if touching player, is so, then remove it and apply power up
 			if (crates.get(i).touching(playerShip.getXPos(), playerShip.getYPos(), playerShip.getShipRad())) {
-				powerUps.add(new PowerUp()); // Apply a random power up
+				powerUpManager.applyRandom(); // Apply a random power up
 				crates.remove(i);
 			} else {
 				crates.get(i).drawCrate(this);
@@ -467,7 +470,7 @@ public class MainSketch extends PApplet {
 	}
 
 //Applies all the current power ups to they player
-	private void applyPowerUps() {
+	/**private void applyPowerUps() {
 		playerShip.applyPowerUps(powerUps);
 		// Cycle through the power ups to apply them, remove finished ones
 		for (int i = powerUps.size() - 1; i >= 0; i--) {
@@ -476,10 +479,10 @@ public class MainSketch extends PApplet {
 				powerUps.remove(i);
 			}
 		}
-	}
+	}**/
 
 //Draw all the current power up to the screen
-	private void showPowerUps() {
+	/*private void showPowerUps() {
 		fill(255);// White
 		textSize(30);// power up text curSize
 		// The power ups need to know what number they are to be drawn
@@ -489,7 +492,7 @@ public class MainSketch extends PApplet {
 			curPowerUp.drawPowerUp(POWER_UP_TIME, powerUpNum, this);
 			powerUpNum++; // track the number of the power up
 		}
-	}
+	}*/
 
 	/*
 	 * Initialise all the values to their original state To be used to start/restart
@@ -500,10 +503,10 @@ public class MainSketch extends PApplet {
 		enemies = new ArrayList<Enemy>();
 		flames = new ArrayList<Flame>();
 		crates = new ArrayList<Crate>();
-		powerUps = new ArrayList<PowerUp>();
 		screenPos = new PVector(width / 2, height / 2);
 		playerShip = new PlayerShip(difficulty);
 		screenVel = new PVector(0, 0);
+		powerUpManager = new PowerUpManager(playerShip);
 		playerScore = 0;
 		time = WAVE_TIME * (difficulty + 1);
 	}

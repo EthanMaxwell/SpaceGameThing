@@ -17,8 +17,10 @@ public abstract class PowerUp {
 	}*/
 
 	private int age = 0;
+	protected int maxAge;
+	private String name;
 	//private Type type = Type.values()[(int) (Math.random() * Type.values().length)];
-
+	
 	/**
 	 * Draw the text in the bottom left to show the time left on the power up
 	 * Position is based on the number power up it is Time remaining is shown in
@@ -28,21 +30,14 @@ public abstract class PowerUp {
 	 * @param canvas
 	 */
 	public void drawPowerUp(int powerUpTime, int powerUpNum, PApplet canvas) {
-		canvas.text(type.powerUpName + " " + ((powerUpTime - age) / canvas.frameRate + 1), 15, canvas.height - 30 * powerUpNum - 10);
+		canvas.text(name + " " + ((powerUpTime - age) / canvas.frameRate + 1), 15, canvas.height - 30 * powerUpNum - 10);
 	}
 	
-	public int age() {
-		return ++age;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public String getName() {
-		return type.powerUpName;
+	public boolean tooOld() {
+		return ++age > maxAge;
 	}
 	
-	public abstract void apply(PlayerShip ship);
+	protected abstract void apply(PlayerShip ship);
+	
 	public abstract void remove(PlayerShip ship);
 }

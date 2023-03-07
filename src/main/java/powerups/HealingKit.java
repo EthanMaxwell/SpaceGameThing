@@ -9,6 +9,10 @@ import playerShip.PlayerShip;
  */
 public class HealingKit extends PowerUp {
 
+	public HealingKit() {
+		maxAge = 0;
+	}
+
 	@Override
 	public void apply(PlayerShip ship) {
 		ship.damage(-100);

@@ -128,7 +128,7 @@ public class PlayerShip {
 		shipHealth -= damage;
 	}
 
-	public void applyPowerUps(List<PowerUp> powerUps) {
+	/**public void applyPowerUps(List<PowerUp> powerUps) {
 
 		// Reset stats
 		curShotDamage = SHOT_DAMAGE;
@@ -173,7 +173,7 @@ public class PlayerShip {
 			}
 		}
 
-	}
+	}*/
 
 	/**
 	 * Draws the players ship with the little cannon on the top.
