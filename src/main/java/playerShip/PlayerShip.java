@@ -69,19 +69,19 @@ public class PlayerShip {
 		curShotTime = SHOT_TIME;
 		shipHealth = BASE_HEALTH - HEALTH_DIF * difficulty;
 	}
-	
+
 	/**
-	 * Make the ship shoot if they can. Shot direction is based of given mouse and screen position.
+	 * Make the ship shoot if they can. Shot direction is based of given mouse and
+	 * screen position.
 	 * 
-	 * @param mouseX X position of the mouse
-	 * @param mouseY Y position of the mouse
+	 * @param mouseX    X position of the mouse
+	 * @param mouseY    Y position of the mouse
 	 * @param screenPos Current position of the screen
 	 * @return The shot fired, null of shot can't be fired.
 	 */
 	public Shot shoot(int mouseX, int mouseY, PVector screenPos) {
-		shotTimer++;
 		if (shotTimer >= curShotTime) {
-			shotTimer = 0; // Reset the timer since they last shot
+			shotTimer -= curShotTime; // Reset the timer since they last shot
 			return new Shot(shipPos.x, shipPos.y,
 					(float) (Math.atan2(mouseY - screenPos.y - shipPos.y, mouseX - screenPos.x - shipPos.x)
 							- curShotInacu + Math.random() * 2 * curShotInacu),
@@ -99,6 +99,11 @@ public class PlayerShip {
 	 * 
 	 */
 	public void modShip(int worldRad) {
+		// Reload the player
+		if (shotTimer < curShotTime) {
+			shotTimer++;
+		}
+
 		// Check if ship has collided with any of the sides and stop it if it has
 		if (shipPos.x > worldRad - SHIP_RAD) { // Left wall
 			shipPos.x = worldRad - SHIP_RAD;
@@ -122,58 +127,34 @@ public class PlayerShip {
 
 	/**
 	 * Damage the ship by the given value.
+	 * 
 	 * @param damage Amount of damage to do to the ship
 	 */
 	public void damage(float damage) {
 		shipHealth -= damage;
 	}
 
-	/**public void applyPowerUps(List<PowerUp> powerUps) {
-
-		// Reset stats
-		curShotDamage = SHOT_DAMAGE;
-		curShotInacu = SHOT_INACU;
-		curShotSize = SHOT_SIZE;
-		curShotVel = SHOT_VEL;
-		curShotTime = SHOT_TIME;
-
-		for (PowerUp powerUp : powerUps) {
-
-			switch (powerUp.getType()) {
-
-			// Heals player ship per frame
-			case HealingKit:
-				shipHealth += 0.022;
-				break;
-			// Increase shot accuracy, velocity and damage
-			case SniperShot:
-				curShotInacu /= 10;
-				curShotVel *= 1.65;
-				curShotDamage *= 2;
-				break;
-			// Greatly increases the players ships rate of fire
-			case RapidFire:
-				curShotTime /= 1.8;
-				break;
-			// Increase shot size and damage
-			case HeavyShot:
-				curShotSize *= 6;
-				curShotDamage *= 5;
-				break;
-			// Increase rate of fire a lot at cost of shot accuracy, size and damage
-			case URF:
-				curShotTime /= 8;
-				curShotInacu *= 2.1;
-				curShotSize /= 1.3;
-				curShotVel /= 1.4;
-				curShotDamage /= 3;
-				break;
-			default:
-				break;
-			}
-		}
-
-	}*/
+	/**
+	 * public void applyPowerUps(List<PowerUp> powerUps) {
+	 * 
+	 * // Reset stats curShotDamage = SHOT_DAMAGE; curShotInacu = SHOT_INACU;
+	 * curShotSize = SHOT_SIZE; curShotVel = SHOT_VEL; curShotTime = SHOT_TIME;
+	 * 
+	 * for (PowerUp powerUp : powerUps) {
+	 * 
+	 * switch (powerUp.getType()) {
+	 * 
+	 * // Heals player ship per frame case HealingKit: shipHealth += 0.022; break;
+	 * // Increase shot accuracy, velocity and damage case SniperShot: curShotInacu
+	 * /= 10; curShotVel *= 1.65; curShotDamage *= 2; break; // Greatly increases
+	 * the players ships rate of fire case RapidFire: curShotTime /= 1.8; break; //
+	 * Increase shot size and damage case HeavyShot: curShotSize *= 6; curShotDamage
+	 * *= 5; break; // Increase rate of fire a lot at cost of shot accuracy, size
+	 * and damage case URF: curShotTime /= 8; curShotInacu *= 2.1; curShotSize /=
+	 * 1.3; curShotVel /= 1.4; curShotDamage /= 3; break; default: break; } }
+	 * 
+	 * }
+	 */
 
 	/**
 	 * Draws the players ship with the little cannon on the top.
@@ -234,7 +215,7 @@ public class PlayerShip {
 		if (curShipAcc == 0)
 			curShipAcc = SHIP_ACC;
 	}
-	
+
 	/**
 	 * Place ship into a state of turning left.
 	 */
@@ -258,36 +239,34 @@ public class PlayerShip {
 		if (curShipAcc > 0)
 			curShipAcc = 0;
 	}
-	
+
 	/**
 	 * Place the ship into a state on not turning.
 	 */
 	public void stopTurning() {
 		curShipRotAcc = 0;
 	}
-	
+
 	public void modROF(float multValue) {
 		curShotTime *= multValue;
-
-		System.out.println(curShotTime);
 	}
-	
+
 	public void modInaccur(float multValue) {
 		curShotInacu *= multValue;
 	}
-	
+
 	public void modShotDam(float multValue) {
 		curShotDamage *= multValue;
 	}
-	
+
 	public void modShotVel(float multValue) {
 		curShotVel *= multValue;
 	}
-	
+
 	public void modShotSize(float multValue) {
 		curShotSize *= multValue;
 	}
-	
+
 	/**
 	 * @return If the ship is currently dead
 	 */
@@ -308,21 +287,21 @@ public class PlayerShip {
 	public float getYPos() {
 		return shipPos.y;
 	}
-	
+
 	/**
 	 * @return The ship current health
 	 */
 	public float getHealth() {
 		return shipHealth;
 	}
-	
+
 	/**
 	 * @return Int value of the ships colour
 	 */
 	public int getColour() {
 		return SHIP_COLOUR;
 	}
-	
+
 	/**
 	 * @return x velocity of ship
 	 */
