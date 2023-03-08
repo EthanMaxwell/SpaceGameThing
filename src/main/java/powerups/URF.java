@@ -12,7 +12,7 @@ public class URF extends PowerUp {
 
 	@Override
 	public void apply(PlayerShip ship) {
-		ship.modROF(1/6f);
+		ship.modROF(1/8f);
 		ship.modInaccur(2.1f);
 		ship.modShotSize(1/1.3f);
 		ship.modShotVel(1/1.4f);
@@ -21,7 +21,7 @@ public class URF extends PowerUp {
 
 	@Override
 	public void remove(PlayerShip ship) {
-		ship.modROF(6f);
+		ship.modROF(8f);
 		ship.modInaccur(1/2.1f);
 		ship.modShotSize(1.3f);
 		ship.modShotVel(1.4f);
