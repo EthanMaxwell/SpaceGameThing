@@ -266,6 +266,28 @@ public class PlayerShip {
 		curShipRotAcc = 0;
 	}
 	
+	public void modROF(float multValue) {
+		curShotTime *= multValue;
+
+		System.out.println(curShotTime);
+	}
+	
+	public void modInaccur(float multValue) {
+		curShotInacu *= multValue;
+	}
+	
+	public void modShotDam(float multValue) {
+		curShotDamage *= multValue;
+	}
+	
+	public void modShotVel(float multValue) {
+		curShotVel *= multValue;
+	}
+	
+	public void modShotSize(float multValue) {
+		curShotSize *= multValue;
+	}
+	
 	/**
 	 * @return If the ship is currently dead
 	 */

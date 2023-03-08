@@ -17,8 +17,8 @@ public abstract class PowerUp {
 	}*/
 
 	private int age = 0;
-	protected int maxAge;
-	private String name;
+	protected int maxAge = 999;
+	protected String name = "Unknown";
 	//private Type type = Type.values()[(int) (Math.random() * Type.values().length)];
 	
 	/**

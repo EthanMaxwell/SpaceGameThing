@@ -14,7 +14,7 @@ public class PowerUpManager {
 	}
 	
 	public void applyRandom() {
-		PowerUp newPowerUp = new HealingKit();
+		PowerUp newPowerUp = new URF();
 		newPowerUp.apply(ship);
 		powerUps.add(newPowerUp);
 	}

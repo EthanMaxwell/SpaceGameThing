@@ -11,11 +11,12 @@ public class HealingKit extends PowerUp {
 
 	public HealingKit() {
 		maxAge = 0;
+		name = "Life-o-matic";
 	}
 
 	@Override
 	public void apply(PlayerShip ship) {
-		ship.damage(-100);
+		ship.damage(-10);
 	}
 
 	@Override
